@@ -1,19 +1,9 @@
 #include "EngineMacros.h"
 
-int main() {
-    const char* testString = "ad";
-    // Load the DLL
-    HMODULE hDLL = LoadLibraryA("Sandbox.dll");
+#include "Runtime/GameLoader/GameLoader.h"
 
-    if (hDLL == nullptr) {
-        std::cerr << "Failed to load the DLL using LoadLibrary" << std::endl;
-    }
-    else {
-
-
-        // Free the DLL module
-        FreeLibrary(hDLL);
-    }
-
+int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow) {
+    GameLoader game = GameLoader();
+    game.UpdateDll("Sandbox.dll");
     return 0;
 }

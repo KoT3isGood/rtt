@@ -3,9 +3,11 @@
   <ItemGroup>
     <ClInclude Include="Source\EngineMacros.h" />
     <ClInclude Include="Source\Runtime\GameLoader\GameLoader.h" />
+    <ClInclude Include="Source\Tools\Logger.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Runtime\GameLoader\GameLoader.cpp" />
+    <ClCompile Include="Source\Tools\Logger.cpp" />
   </ItemGroup>
 </Project>
