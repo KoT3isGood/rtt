@@ -1,3 +1,3 @@
 #pragma once
 #include "ProjectMacros.h"
-FUNC void UpdateWorld();
+FUNC int Add(int a, int b);

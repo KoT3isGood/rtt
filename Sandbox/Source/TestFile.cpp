@@ -1,6 +1,7 @@
 #include "TestFile.h"
 
-int Add(int a, int b)
+void UpdateWorld()
 {
-	return a+b;
+
+	OutputDebugStringA("Updating\n");
 }
