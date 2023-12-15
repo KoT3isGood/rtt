@@ -6,3 +6,5 @@
 #include <vector>
 
 #include "Tools/Logger.h"
+#include "Engine/glm/glm.hpp"
+using namespace glm;

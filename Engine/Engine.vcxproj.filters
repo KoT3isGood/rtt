@@ -4,10 +4,19 @@
     <ClInclude Include="Source\EngineMacros.h" />
     <ClInclude Include="Source\Runtime\Engine\GameLoader\GameLoader.h" />
     <ClInclude Include="Source\Tools\Logger.h" />
+    <ClInclude Include="Source\Runtime\Engine\Rendering\WindowGenerator.h" />
+    <ClInclude Include="Source\Runtime\Engine\Rendering\Vulkanner\Vulkanner.h" />
+    <ClInclude Include="Source\Editor\Interface\EditorInterface.h" />
+    <ClInclude Include="Source\Runtime\Engine\GameLoader\CurrentGame.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Runtime\Engine\GameLoader\GameLoader.cpp" />
     <ClCompile Include="Source\Tools\Logger.cpp" />
+    <ClCompile Include="Source\Runtime\Engine\Rendering\WindowGenerator.cpp" />
+    <ClCompile Include="Source\Runtime\Engine\Rendering\Include\glad\glad.c" />
+    <ClCompile Include="Source\Runtime\Engine\Rendering\Vulkanner\Vulkanner.cpp" />
+    <ClCompile Include="Source\Editor\Interface\EditorInterface.cpp" />
+    <ClCompile Include="Source\Runtime\Engine\GameLoader\CurrentGame.cpp" />
   </ItemGroup>
 </Project>

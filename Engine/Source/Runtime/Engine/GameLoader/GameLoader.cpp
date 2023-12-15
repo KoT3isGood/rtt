@@ -10,6 +10,7 @@ void GameLoader::UpdateDll(std::string dllName)
 	currentDll = LoadLibraryA(dllName.c_str());
 	LoadingStatus = (currentDll != nullptr);
 	if (LoadingStatus) {
+		this->currentGame = dllName;
 		PRINTADVANCED("DLL " + dllName + " was loaded successfully", info);
 		return;
 	}

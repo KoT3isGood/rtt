@@ -25,11 +25,11 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BA1B5119-F7FF-41B4-961A-EDA482D78D58}.DebugGame|x64.ActiveCfg = NoEditor|x64
-		{BA1B5119-F7FF-41B4-961A-EDA482D78D58}.DebugGame|x64.Build.0 = NoEditor|x64
+		{BA1B5119-F7FF-41B4-961A-EDA482D78D58}.DebugGame|x64.ActiveCfg = NOGUI|x64
+		{BA1B5119-F7FF-41B4-961A-EDA482D78D58}.DebugGame|x64.Build.0 = NOGUI|x64
 		{BA1B5119-F7FF-41B4-961A-EDA482D78D58}.DebugGame|x86.ActiveCfg = Editor|Win32
-		{BA1B5119-F7FF-41B4-961A-EDA482D78D58}.DedicatedServer|x64.ActiveCfg = NoEditor|x64
-		{BA1B5119-F7FF-41B4-961A-EDA482D78D58}.DedicatedServer|x64.Build.0 = NoEditor|x64
+		{BA1B5119-F7FF-41B4-961A-EDA482D78D58}.DedicatedServer|x64.ActiveCfg = NOGUI|x64
+		{BA1B5119-F7FF-41B4-961A-EDA482D78D58}.DedicatedServer|x64.Build.0 = NOGUI|x64
 		{BA1B5119-F7FF-41B4-961A-EDA482D78D58}.DedicatedServer|x86.ActiveCfg = Editor|Win32
 		{BA1B5119-F7FF-41B4-961A-EDA482D78D58}.Editor|x64.ActiveCfg = Editor|x64
 		{BA1B5119-F7FF-41B4-961A-EDA482D78D58}.Editor|x64.Build.0 = Editor|x64
