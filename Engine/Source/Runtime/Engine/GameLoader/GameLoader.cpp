@@ -10,7 +10,6 @@ GameLoader::~GameLoader()
 void GameLoader::UpdateDll(std::string dllName)
 {
 	// Kills current DLL to prevent memory leak
-	// Sets loading status to false because it doesn't get reset when beign updated using LoadingStatus = (currentDll != nullptr);
 	this->KillDll();
 	this->LoadingStatus = false;
 
