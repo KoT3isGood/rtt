@@ -1,3 +1,5 @@
 .vs
 binary
-Engine/imgui.ini
+imgui.ini
+/Engine/imgui.ini
+/Engine/imgui.ini
