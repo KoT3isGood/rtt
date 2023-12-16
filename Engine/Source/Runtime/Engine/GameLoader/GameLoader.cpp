@@ -1,43 +1,48 @@
 #include "GameLoader.h"
 
 
+GameLoader::~GameLoader()
+{
+	// Prevents memory leaks
+	KillDll(); 
+}
 
 void GameLoader::UpdateDll(std::string dllName)
 {
-	
+	// Kills current DLL to prevent memory leak
+	// Sets loading status to false because it doesn't get reset when beign updated using LoadingStatus = (currentDll != nullptr);
 	this->KillDll();
 	this->LoadingStatus = false;
+
+	// Loads DLL
 	currentDll = LoadLibraryA(dllName.c_str());
+
+	// Checks if it was successful
 	LoadingStatus = (currentDll != nullptr);
 	if (LoadingStatus) {
 		this->currentGame = dllName;
-		PRINTADVANCED("DLL " + dllName + " was loaded successfully", info);
 		return;
 	}
-	PRINTADVANCED("Failed to load DLL " + dllName, error);
 }
 
-void GameLoader::TickWorld()
+void GameLoader::RunVoidFunction(std::string name)
 {
 	if (!LoadingStatus) {
 		return;
 	}
-	// since i can only interact with functions i will use them, and so i will create world actors pointer
-	using UpdateWorldPtr = void (*)();
-	UpdateWorldPtr updateWorld = (UpdateWorldPtr)GetProcAddress(currentDll, "UpdateWorld");
-
-	if (updateWorld == nullptr) {
-		
-		PRINTADVANCED("Function was not found", error);
+	// Creates new void function
+	// Gets address of the function
+	using FunctionCaller = void (*)();
+	FunctionCaller functionCaller = (FunctionCaller)GetProcAddress(currentDll, name.c_str());
+	if (functionCaller == nullptr) {
 		return;
 	}
-	
-	updateWorld();
-	PRINTADVANCED("Function activated", info);
+
+	// Calls function
+	functionCaller();
 }
 void GameLoader::KillDll()
 {
-	
 	if (LoadingStatus) {
 		FreeLibrary(currentDll);
 		return;

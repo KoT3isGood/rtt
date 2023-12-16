@@ -1,11 +1,23 @@
 #include "WindowGenerator.h"
 
-
-void GameWindow::framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+//void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+//{
+//    glViewport(0, 0, width, height);
+//}
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+    //setWindowSize(width, height);
+//#ifdef NOGUI
+    glViewport(0, 0, width, height);
+//#endif
+}
+void GameWindow::setWindowSize(int width, int height)
+{
     window_size.x = width;
     window_size.y = height;
-    glViewport(0, 0, width, height);
-};
+}
+;
+WNDPROC original_proc;
+
 
 GameWindow::GameWindow()
 {
@@ -16,8 +28,9 @@ GameWindow::GameWindow()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 
-
     GLFWwindow* window = glfwCreateWindow(window_size.x, window_size.y, "Retto", NULL, NULL);
+    #ifndef NOGUI
+    #endif
     if (window == NULL)
     {
         PRINTADVANCED("Failed to create window", glslerror);
@@ -39,10 +52,12 @@ GameWindow::GameWindow()
 
     vulkannerRendering = Vulkanner(&window_size);
     glViewport(0, 0, window_size.x, window_size.y);
+    
 
-#ifdef NOGUI
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-#else
+#ifndef NOGUI
+    editor.currentWindowSize = &window_size;
+    editor.currentWindow = window;
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
@@ -62,7 +77,8 @@ GameWindow::GameWindow()
 
     while (!glfwWindowShouldClose(window))
     {
-        
+        glfwGetWindowSize(window, &window_size.x, &window_size.y);
+
         #ifndef NOGUI
         ImGui_ImplGlfw_NewFrame();
         ImGui_ImplOpenGL3_NewFrame();
@@ -98,10 +114,11 @@ GameWindow::GameWindow()
         #endif
         glfwPollEvents();
     }
+    #ifndef NOGUI
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-
+    #endif
     glfwDestroyWindow(window);
 
     glfwTerminate();

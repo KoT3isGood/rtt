@@ -4,13 +4,13 @@
 class GameLoader {
 public:
 	GameLoader() = default;
-	
+	~GameLoader();
 	std::string currentGame;
 
 	void UpdateDll(std::string dllName);
 	void KillDll();
 
-	void TickWorld();
+	void RunVoidFunction(std::string name);
 private:
 	HMODULE currentDll;
 	bool LoadingStatus = false;
