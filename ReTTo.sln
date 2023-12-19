@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "Libraries\ImGui\ImGui.vcxitems", "{B51076D3-0BB9-4BDE-B0C0-B9C16DFD3C17}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{ED33B8C9-FFD9-41EE-9649-9FD4C705E392}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.vcxproj", "{AF5A691D-67AD-4EA6-AD30-6C53CCDEFEF8}"
 EndProject
 Global

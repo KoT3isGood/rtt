@@ -1,0 +1,156 @@
+#version 460 core
+layout (local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+
+
+
+
+// Input
+
+// Buffers
+// Triangle SSBo Buffer
+layout(std430,binding = 0) buffer triangleBuffer {
+    mat4x4 triangles[];
+    // x0,  y0,  z0,  materialID
+    // x1,  y1,  z1,  uv01
+    // x2,  y2,  z2,  uv00
+    // uv10,uv11,uv20,uv21
+};
+
+// Bounding Box Buffer
+// Used for optimization
+layout(std430,binding = 1) buffer boundingBoxes {
+    mat2x4 boundingBox[];
+    // x,y,z, start
+    // -x,-y,-z, end
+};
+
+// Uniforms
+uniform vec3 cameraPos;
+uniform uint amountOfTriangles;
+uniform vec2 resolution;
+
+
+
+
+
+
+// Output
+layout(rgba32f, binding = 0) uniform image2D imgOutput;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Ray Tracing
+
+struct Ray {
+    vec3 origin;
+    vec3 direction;
+};
+
+
+
+// Ray-trinagle intersection
+// Source: https://iquilezles.org/articles/intersectors/
+vec3 triIntersect( in Ray ray, in vec3 v0, in vec3 v1, in vec3 v2 )
+{
+    vec3 v1v0 = v1 - v0;
+    vec3 v2v0 = v2 - v0;
+    vec3 rov0 = ray.origin - v0;
+    vec3  n = cross( v1v0, v2v0 );
+    vec3  q = cross( rov0, ray.direction );
+    float d = 1.0/dot(  ray.direction, n );
+    float u = d*dot( -q, v2v0 );
+    float v = d*dot(  q, v1v0 );
+    float t = d*dot( -n, rov0 );
+    if( u<0.0 || v<0.0 || (u+v)>1.0 ) t = -1.0;
+    return vec3( t, u, v );
+}
+
+bool traceRayT(in Ray ray, out vec3 triangleProperties, out int triangle) {
+    int nearestTriangle = -1;
+    vec3 hit = vec3(100000,0,0);
+    for (int i = 0; i<1;i++) {
+        vec3 thisHit = triIntersect(ray,triangles[i][0].xyz,triangles[i][1].xyz,triangles[i][2].xyz);
+        if (thisHit.x>=0.0 && thisHit.x<hit.x) {
+            hit = thisHit;
+            nearestTriangle = i;
+        };
+    }
+    if (hit.x>0.0&&hit.x!=100000) {
+        triangleProperties = hit;
+        triangle = nearestTriangle;
+        return true;
+    }
+    
+    return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void main() {
+    // Set up texCoord
+    // Since compute shaders do not provide them in clear way
+    vec2 texCoord = vec2(0.0, 0.0);
+    ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
+	
+    texCoord.x = float(texelCoord.x-0.5)/(gl_NumWorkGroups.x*gl_WorkGroupSize.x);
+    texCoord.y = float(texelCoord.y-0.5)/(gl_NumWorkGroups.y*gl_WorkGroupSize.y);
+
+    // Ray Tracing Part
+
+    vec2 uv = (texCoord-0.5)*resolution/resolution.y;
+
+    Ray albedoRay;
+    albedoRay.origin = vec3(-30,0,0);
+    albedoRay.direction = vec3(1,uv);
+
+
+    vec3 triangleProperties;
+    int triangle;
+    bool hit = false;
+    hit = traceRayT(albedoRay,triangleProperties,triangle);
+
+    vec3 color = vec3(0.0);
+    if (hit) {
+        color = vec3(1.0);
+    }
+
+
+
+    imageStore(imgOutput, texelCoord, vec4(color,1.0));
+}

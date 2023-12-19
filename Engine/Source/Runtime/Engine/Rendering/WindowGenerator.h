@@ -13,6 +13,10 @@
 
 #include "..\..\Engine\Source\Editor\Interface\EditorInterface.h"
 
+#include "Engine/Rendering/Buffer/Buffer.h"
+#include "Engine/Rendering/Shader/Shader.h"
+#include "Engine/Rendering/Texture/Texture.h"
+
 
 class GameWindow {
 public:

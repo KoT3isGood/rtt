@@ -23,14 +23,13 @@ GameWindow::GameWindow()
 {
     PRINTADVANCED("Creating Rendering", glsl);
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-
+#ifndef NOGUI
+    glfwWindowHint(GLFW_VISIBLE, 1);
+#endif
     GLFWwindow* window = glfwCreateWindow(window_size.x, window_size.y, "Retto", NULL, NULL);
-    #ifndef NOGUI
-    #endif
     if (window == NULL)
     {
         PRINTADVANCED("Failed to create window", glslerror);
@@ -50,14 +49,14 @@ GameWindow::GameWindow()
 
 
 
-    vulkannerRendering = Vulkanner(&window_size);
+   
     glViewport(0, 0, window_size.x, window_size.y);
     
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-#ifndef NOGUI
     editor.currentWindowSize = &window_size;
     editor.currentWindow = window;
+   
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
@@ -69,56 +68,49 @@ GameWindow::GameWindow()
     ImGui_ImplOpenGL3_Init("#version 330");
 
    
-#endif
-
+    vulkannerRendering = Vulkanner();
     vulkannerRendering.Init();
+   
 
-
-
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(window) && editor.shouldAppBeOpened)
     {
-        glfwGetWindowSize(window, &window_size.x, &window_size.y);
-
-        #ifndef NOGUI
+        //glfwGetWindowSize(window, &window_size.x, &window_size.y);
         ImGui_ImplGlfw_NewFrame();
         ImGui_ImplOpenGL3_NewFrame();
         ImGui::NewFrame();
-        #endif
 
-        vulkannerRendering.Update();
-        glClear(GL_COLOR_BUFFER_BIT);
 
+        window_size = editor.viewportSizeMirror;
+        vulkannerRendering.Update(&window_size);
+        
+       
         
 
         
 
         
 
-        #ifndef NOGUI
-      
+        
+
         editor.CreateInterface();
+        editor.viewportTexture = &vulkannerRendering.albedoOutput;
+
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-       
-        #endif
 
         glfwSwapBuffers(window);
-        #ifndef NOGUI
         if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
         {
             GLFWwindow* backup_current_context = glfwGetCurrentContext();
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
-            glfwMakeContextCurrent(backup_current_context);
+            glfwMakeContextCurrent(backup_current_context); 
         }
-        #endif
         glfwPollEvents();
     }
-    #ifndef NOGUI
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    #endif
     glfwDestroyWindow(window);
 
     glfwTerminate();

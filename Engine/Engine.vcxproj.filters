@@ -8,6 +8,10 @@
     <ClInclude Include="Source\Runtime\Engine\Rendering\Vulkanner\Vulkanner.h" />
     <ClInclude Include="Source\Editor\Interface\EditorInterface.h" />
     <ClInclude Include="Source\Runtime\Engine\GameLoader\CurrentGame.h" />
+    <ClInclude Include="Source\Engine\Rendering\Buffer\Buffer.h" />
+    <ClInclude Include="Source\Engine\Rendering\Shader\Shader.h" />
+    <ClInclude Include="Source\Engine\Rendering\Texture\Texture.h" />
+    <ClInclude Include="Source\Engine\Rendering\Texture\TextureFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
@@ -18,5 +22,9 @@
     <ClCompile Include="Source\Runtime\Engine\Rendering\Vulkanner\Vulkanner.cpp" />
     <ClCompile Include="Source\Editor\Interface\EditorInterface.cpp" />
     <ClCompile Include="Source\Runtime\Engine\GameLoader\CurrentGame.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\Buffer\Buffer.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\Shader\Shader.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\Texture\Texture.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\Texture\TextureFile.cpp" />
   </ItemGroup>
 </Project>

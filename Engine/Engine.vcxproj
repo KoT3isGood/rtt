@@ -28,6 +28,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Editor\Interface\EditorInterface.h" />
+    <ClInclude Include="Source\Engine\Rendering\Buffer\Buffer.h" />
+    <ClInclude Include="Source\Engine\Rendering\Shader\Shader.h" />
+    <ClInclude Include="Source\Engine\Rendering\Texture\Texture.h" />
+    <ClInclude Include="Source\Engine\Rendering\Texture\TextureFile.h" />
     <ClInclude Include="Source\Runtime\Engine\GameLoader\CurrentGame.h" />
     <ClInclude Include="Source\Runtime\Engine\GameLoader\GameLoader.h" />
     <ClInclude Include="Source\EngineMacros.h" />
@@ -37,6 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Editor\Interface\EditorInterface.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\Buffer\Buffer.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\Shader\Shader.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\Texture\Texture.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\Texture\TextureFile.cpp" />
     <ClCompile Include="Source\Runtime\Engine\GameLoader\CurrentGame.cpp" />
     <ClCompile Include="Source\Runtime\Engine\GameLoader\GameLoader.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -163,7 +171,7 @@
       <PreprocessorDefinitions>EDITOR; NOGUI;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)/Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/Source;$(ProjectDir)\Source\Runtime\Engine\Rendering\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -215,7 +223,7 @@
       <PreprocessorDefinitions>EDITOR; NOGUI;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)/Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/Source;$(ProjectDir)\Source\Runtime\Engine\Rendering\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
