@@ -103,11 +103,9 @@ void EditorInterface::CreateViewport()
 {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding,ImVec2(0,0));
     ImGui::Begin("Viewport",(bool*)0,ImGuiWindowFlags_NoCollapse);
-    ImGui::Text("test");
     viewportSize = ImGui::GetContentRegionAvail();
     viewportSizeMirror = ivec2(viewportSize.x, viewportSize.y);
     ImGui::Image((void*)viewportTexture->texture, viewportSize,ImVec2(0,1),ImVec2(1,0));
-    ImGui::Text("test2");
     ImGui::End();
     ImGui::PopStyleVar();
     
