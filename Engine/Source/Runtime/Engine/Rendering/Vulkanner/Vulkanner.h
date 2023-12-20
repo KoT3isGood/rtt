@@ -14,7 +14,7 @@ public:
 	Vulkanner();
 
 	void Init();
-	void Update(ivec2 *resolutionPtr);
+	void Update(ivec2 *resolutionPtr, float deltaTime);
 
 	RenderTexture albedoOutput;
 	ivec2* resolution;
@@ -22,6 +22,8 @@ public:
 	// Textures Shaders Buffers etc
 	Shader pathTracer;
 	Buffer triangle;
+
+	float test = 0.0;
 private:
 	unsigned int shaderProgram;
 	unsigned int VAO;

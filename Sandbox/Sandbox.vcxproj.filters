@@ -3,8 +3,10 @@
   <ItemGroup>
     <ClInclude Include="Source\ProjectMacros.h" />
     <ClInclude Include="Source\TestFile.h" />
+    <ClInclude Include="Bridge\CurrentProperties.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\TestFile.cpp" />
+    <ClCompile Include="Bridge\CurrentProperties.cpp" />
   </ItemGroup>
 </Project>

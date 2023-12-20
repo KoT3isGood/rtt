@@ -101,6 +101,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)/binary/$(Configuration)/</OutDir>
     <IntDir>$(SolutionDir)/binary/trash/$(ProjectName)-$(Configuration)/</IntDir>
+    <SourcePath>E:\ReTTo\Engine\Source;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DedicatedServer|Win32'">
     <OutDir>$(SolutionDir)/binary/$(Configuration)/</OutDir>
@@ -113,6 +114,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)/binary/$(Configuration)/</OutDir>
     <IntDir>$(SolutionDir)/binary/trash/$(ProjectName)-$(Configuration)/</IntDir>
+    <SourcePath>E:\ReTTo\Engine\Source;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DedicatedServer|x64'">
     <OutDir>$(SolutionDir)/binary/$(Configuration)/</OutDir>
@@ -129,6 +131,7 @@
       <PreprocessorDefinitions>GAME; DEBUG</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>E:\ReTTo\Engine\Source;$(ProjectDir)\Source;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -176,6 +179,7 @@
       <PreprocessorDefinitions>GAME; DEBUG</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>E:\ReTTo\Engine\Source;$(ProjectDir)\Source;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -217,10 +221,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bridge\CurrentProperties.h" />
     <ClInclude Include="Source\ProjectMacros.h" />
     <ClInclude Include="Source\TestFile.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bridge\CurrentProperties.cpp" />
     <ClCompile Include="Source\TestFile.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -22,7 +22,10 @@ class GameWindow {
 public:
 	GameWindow();
 	ivec2 window_size = ivec2(1280,720);
+	float deltaTime = 0.0;
 private:
+	float currentFrame = 0.0;
+	float lastFrame = 0.0;
 	void setWindowSize(int width, int height);
 	EditorInterface editor;
 	Vulkanner vulkannerRendering;

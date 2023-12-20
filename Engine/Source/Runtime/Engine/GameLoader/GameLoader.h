@@ -1,5 +1,6 @@
 #pragma once
 #include "EngineMacros.h"
+#include "Runnable/World/World.h"
 
 class GameLoader {
 public:
@@ -14,6 +15,9 @@ public:
 
 	// Runs function by name
 	void RunVoidFunction(std::string name);
+
+	// Runs function by name
+	World* GetWorld();
 private:
 	HMODULE currentDll;
 	bool LoadingStatus = false;

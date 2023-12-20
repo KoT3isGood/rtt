@@ -12,6 +12,11 @@
     <ClInclude Include="Source\Engine\Rendering\Shader\Shader.h" />
     <ClInclude Include="Source\Engine\Rendering\Texture\Texture.h" />
     <ClInclude Include="Source\Engine\Rendering\Texture\TextureFile.h" />
+    <ClInclude Include="Source\Runnable\World\World.h" />
+    <ClInclude Include="Source\Runnable\Actor\Actor.h" />
+    <ClInclude Include="Source\Runnable\Component\Component.h" />
+    <ClInclude Include="Source\Runnable\Reflected.h" />
+    <ClInclude Include="Source\Editor\ImGLM\Convertor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
@@ -26,5 +31,10 @@
     <ClCompile Include="Source\Engine\Rendering\Shader\Shader.cpp" />
     <ClCompile Include="Source\Engine\Rendering\Texture\Texture.cpp" />
     <ClCompile Include="Source\Engine\Rendering\Texture\TextureFile.cpp" />
+    <ClCompile Include="Source\Runnable\World\World.cpp" />
+    <ClCompile Include="Source\Runnable\Actor\Actor.cpp" />
+    <ClCompile Include="Source\Runnable\Component\Component.cpp" />
+    <ClCompile Include="Source\Runnable\Reflected.cpp" />
+    <ClCompile Include="Source\Editor\ImGLM\Convertor.cpp" />
   </ItemGroup>
 </Project>

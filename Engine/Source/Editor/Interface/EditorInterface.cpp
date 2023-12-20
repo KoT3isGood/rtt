@@ -10,6 +10,7 @@ void EditorInterface::CreateInterface()
     //Should be disabled if no DLL
     ImGui::BeginDisabled(CurrentGame::getCurrentGame()->currentGame=="");
     CreateViewport();
+    CreateActorProperties();
     ImGui::EndDisabled();
 #endif
 }
@@ -91,8 +92,12 @@ void EditorInterface::CreateGameLoader()
         ImGui::Begin("Game Loading Tool", &shouldGameLoaderBeOpened, ImGuiWindowFlags_NoTitleBar);
         
         if (ImGui::Button("Load Sandbox.dll")) {
-            shouldGameLoaderBeOpened = false;
+            //shouldGameLoaderBeOpened = false;
             CurrentGame::setCurrentGame("Sandbox.dll");
+        }
+        if (ImGui::Button("GetWorld Sandbox.dll")) {
+            //shouldGameLoaderBeOpened = false;
+            CurrentGame::getCurrentGame()->GetWorld();
         }
         ImGui::End();
     }
@@ -112,8 +117,11 @@ void EditorInterface::CreateViewport()
 
 void EditorInterface::CreateActorBrowser()
 {
+    
 }
 
 void EditorInterface::CreateActorProperties()
 {
+    ImGui::Begin("Actor Properties");
+    ImGui::End();
 }

@@ -3,6 +3,7 @@
 #include "..\..\Libraries\ImGui\imgui.h"
 #include "..\..\Libraries\ImGui\imgui_impl_glfw.h"
 #include "..\..\Libraries\ImGui\imgui_impl_opengl3.h"
+#include "Editor/ImGLM/Convertor.h"
 //#include <Runtime/Engine/Rendering/Include/GLFW/glfw3.h>
 #include "Runtime/Engine/GameLoader/CurrentGame.h"
 
@@ -33,7 +34,4 @@ private:
 	void CreateViewport();
 	void CreateActorBrowser();
 	void CreateActorProperties();
-
-	
-
 };

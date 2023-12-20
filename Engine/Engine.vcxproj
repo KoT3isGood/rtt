@@ -27,24 +27,33 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Editor\ImGLM\Convertor.h" />
     <ClInclude Include="Source\Editor\Interface\EditorInterface.h" />
     <ClInclude Include="Source\Engine\Rendering\Buffer\Buffer.h" />
     <ClInclude Include="Source\Engine\Rendering\Shader\Shader.h" />
     <ClInclude Include="Source\Engine\Rendering\Texture\Texture.h" />
     <ClInclude Include="Source\Engine\Rendering\Texture\TextureFile.h" />
+    <ClInclude Include="Source\Runnable\Actor\Actor.h" />
+    <ClInclude Include="Source\Runnable\Component\Component.h" />
+    <ClInclude Include="Source\Runnable\Reflected.h" />
     <ClInclude Include="Source\Runtime\Engine\GameLoader\CurrentGame.h" />
     <ClInclude Include="Source\Runtime\Engine\GameLoader\GameLoader.h" />
     <ClInclude Include="Source\EngineMacros.h" />
     <ClInclude Include="Source\Runtime\Engine\Rendering\Vulkanner\Vulkanner.h" />
     <ClInclude Include="Source\Runtime\Engine\Rendering\WindowGenerator.h" />
     <ClInclude Include="Source\Tools\Logger.h" />
+    <ClInclude Include="Source\Runnable\World\World.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Editor\ImGLM\Convertor.cpp" />
     <ClCompile Include="Source\Editor\Interface\EditorInterface.cpp" />
     <ClCompile Include="Source\Engine\Rendering\Buffer\Buffer.cpp" />
     <ClCompile Include="Source\Engine\Rendering\Shader\Shader.cpp" />
     <ClCompile Include="Source\Engine\Rendering\Texture\Texture.cpp" />
     <ClCompile Include="Source\Engine\Rendering\Texture\TextureFile.cpp" />
+    <ClCompile Include="Source\Runnable\Actor\Actor.cpp" />
+    <ClCompile Include="Source\Runnable\Component\Component.cpp" />
+    <ClCompile Include="Source\Runnable\Reflected.cpp" />
     <ClCompile Include="Source\Runtime\Engine\GameLoader\CurrentGame.cpp" />
     <ClCompile Include="Source\Runtime\Engine\GameLoader\GameLoader.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -52,6 +61,7 @@
     <ClCompile Include="Source\Runtime\Engine\Rendering\Vulkanner\Vulkanner.cpp" />
     <ClCompile Include="Source\Runtime\Engine\Rendering\WindowGenerator.cpp" />
     <ClCompile Include="Source\Tools\Logger.cpp" />
+    <ClCompile Include="Source\Runnable\World\World.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

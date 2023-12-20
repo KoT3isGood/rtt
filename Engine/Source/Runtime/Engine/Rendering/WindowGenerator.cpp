@@ -79,9 +79,12 @@ GameWindow::GameWindow()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui::NewFrame();
 
+        currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
 
         window_size = editor.viewportSizeMirror;
-        vulkannerRendering.Update(&window_size);
+        vulkannerRendering.Update(&window_size, deltaTime);
         
        
         

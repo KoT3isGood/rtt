@@ -103,8 +103,9 @@ void Vulkanner::Init()
     */
 }
 
-void Vulkanner::Update(ivec2 *resolutionPtr)
+void Vulkanner::Update(ivec2 *resolutionPtr,float deltaTime)
 {
+
 	resolution = resolutionPtr;
 	
 	std::vector<float> triangles = {
@@ -116,10 +117,18 @@ void Vulkanner::Update(ivec2 *resolutionPtr)
 	triangle.SetData(12, &triangles);
 
 	albedoOutput.BindTextureAndUpdateRes(*resolution);
-
 	pathTracer.use();
 	pathTracer.setVec2("resolution", vec2(resolution->x, resolution->y));
-	glDispatchCompute(int(resolution->x/8), int(resolution->y/8), 1);
+    pathTracer.setInt("amountOfTriangles", 1);
+    
+    pathTracer.setBool("isOrto", false);
+
+    pathTracer.setVec3("cameraPos", vec3(-2, 0, 0));
+    pathTracer.setVec3("cameraRotation", vec3(0.0, 0.0, 0.0));
+
+    test += deltaTime;
+    
+	glDispatchCompute(int(resolution->x/8+1), int(resolution->y/8+1), 1);
 	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	
 
