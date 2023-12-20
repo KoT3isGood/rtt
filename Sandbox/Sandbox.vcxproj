@@ -131,7 +131,7 @@
       <PreprocessorDefinitions>GAME; DEBUG</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>E:\ReTTo\Engine\Source;$(ProjectDir)\Source;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\ReTTo\Engine\Source;$(ProjectDir)\Source;$(ProjectDir)\Bridge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -179,7 +179,7 @@
       <PreprocessorDefinitions>GAME; DEBUG</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>E:\ReTTo\Engine\Source;$(ProjectDir)\Source;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\ReTTo\Engine\Source;$(ProjectDir)\Source;$(ProjectDir)\Bridge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -222,7 +222,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Bridge\CurrentProperties.h" />
-    <ClInclude Include="Source\ProjectMacros.h" />
+    <ClInclude Include="Bridge\ProjectMacros.h" />
     <ClInclude Include="Source\TestFile.h" />
   </ItemGroup>
   <ItemGroup>

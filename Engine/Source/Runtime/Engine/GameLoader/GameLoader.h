@@ -16,7 +16,7 @@ public:
 	// Runs function by name
 	void RunVoidFunction(std::string name);
 
-	// Runs function by name
+	// Returns world
 	World* GetWorld();
 private:
 	HMODULE currentDll;

@@ -26,9 +26,6 @@ GameWindow::GameWindow()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#ifndef NOGUI
-    glfwWindowHint(GLFW_VISIBLE, 1);
-#endif
     GLFWwindow* window = glfwCreateWindow(window_size.x, window_size.y, "Retto", NULL, NULL);
     if (window == NULL)
     {
@@ -70,22 +67,50 @@ GameWindow::GameWindow()
    
     vulkannerRendering = Vulkanner();
     vulkannerRendering.Init();
-   
+
+    
 
     while (!glfwWindowShouldClose(window) && editor.shouldAppBeOpened)
     {
+        // 1. calculate delta time
+        currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        // 2. execute code from dll
+        World* currentWorld = CurrentGame::getCurrentGame()->GetWorld();
+
+        if (currentWorld != nullptr) {
+            currentWorld->UpdateWorld(deltaTime);
+        }
+       
+
+
+        // 3. update physics
+
+
+
+
+
+
+
+
+
+
+
         //glfwGetWindowSize(window, &window_size.x, &window_size.y);
         ImGui_ImplGlfw_NewFrame();
         ImGui_ImplOpenGL3_NewFrame();
         ImGui::NewFrame();
 
-        currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
-
-        window_size = editor.viewportSizeMirror;
-        vulkannerRendering.Update(&window_size, deltaTime);
         
+        #ifndef NOGUI
+        window_size = editor.viewportSizeMirror;
+        #else 
+        glfwGetWindowSize(window, &window_size.x, &window_size.y);
+        #endif
+        vulkannerRendering.Update(&window_size, deltaTime);
+
        
         
 

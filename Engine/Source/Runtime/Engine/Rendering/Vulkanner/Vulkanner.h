@@ -17,7 +17,7 @@ public:
 	void Update(ivec2 *resolutionPtr, float deltaTime);
 
 	RenderTexture albedoOutput;
-	ivec2* resolution;
+	ivec2* resolution = new ivec2(1280,720);
 
 	// Textures Shaders Buffers etc
 	Shader pathTracer;
