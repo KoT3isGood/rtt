@@ -48,8 +48,8 @@ void Vulkanner::Init()
 	pathTracer = Shader("Source/Runtime/Engine/Rendering/Vulkanner/Shaders/pathTracer.comp");
 	albedoOutput = RenderTexture(*resolution, 0);
 	triangle = Buffer(0);
-    sphere = Buffer(2);
-
+    sphere = Buffer(3);
+    boundingBox = Buffer(2);
 
 
 
@@ -127,19 +127,25 @@ void Vulkanner::Update(ivec2 *resolutionPtr,float deltaTime)
     std::vector<float> spheres = {
     };
     int triAmount = 0;
+    int bbAmount = 0;
     GameLoader* currentGame = CurrentGame::getCurrentGame();
     if (currentGame->currentGame != "") {
         std::vector<float>* geometry = currentGame->GetWorld()->GetWorldGeometry();
+        std::vector<float>* bb = currentGame->GetWorld()->GetBoundingBoxes();
         triAmount = geometry->size();
         triangle.SetData(triAmount, geometry);
-        
+        bbAmount = bb->size();
+        boundingBox.SetData(bbAmount, bb);
+
+
     }
     else {
         std::vector<float>triangles = {};
         triangle.SetData(0, &triangles);
+        boundingBox.SetData(0, &triangles);
     }
 
-
+    
 	
     sphere.SetData(spheres.size(), &spheres);
 
@@ -149,6 +155,8 @@ void Vulkanner::Update(ivec2 *resolutionPtr,float deltaTime)
 
 	pathTracer.setVec2("resolution", vec2(resolution->x, resolution->y));
     pathTracer.setInt("amountOfTriangles", triAmount/16);
+    pathTracer.setInt("amountOfBoundingBoxes", bbAmount / 8);
+
     pathTracer.setInt("amountOfLights", spheres.size()/4);
     
     pathTracer.setBool("isOrto", false);

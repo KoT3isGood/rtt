@@ -19,6 +19,8 @@ void World::UpdateWorld(float deltaTime)
 void World::PrecalculateTriangles()
 {
 	worldGeometry = {};
+	boundingBoxes = {};
+	int totalTriangles = 0;
 	for (auto actor : actors) {
 		mat3x3 actorRotation = rotationToMat3x3(actor->rotation);
 		vec3 actorPosition = actor->position;
@@ -29,6 +31,9 @@ void World::PrecalculateTriangles()
 			vec3 componentSize = component->size;
 			Mesh* thisComponent = dynamic_cast<Mesh*>(component);
 			thisComponent->modifiedVertex = thisComponent->vertex;
+
+			int bbstart = totalTriangles;
+
 			// apply transform
 			for (int i = 0; i < thisComponent->modifiedVertex.size();i++) {
 				vec3* vertex = &thisComponent->modifiedVertex[i];
@@ -40,6 +45,34 @@ void World::PrecalculateTriangles()
 				//*vertex *= actorSize;
 				*vertex = actorRotation * *vertex;
 				*vertex += actorPosition;
+
+				// Calculate bounding boxes;
+				if (vertex->x > thisComponent->maxX)
+				{
+					thisComponent->maxX = vertex->x;
+				}
+				if (vertex->x < thisComponent->minX)
+				{
+					thisComponent->minX = vertex->x;
+				}
+				//y
+				if (vertex->y > thisComponent->maxY)
+				{
+					thisComponent->maxY = vertex->y;
+				}
+				if (vertex->y < thisComponent->minY)
+				{
+					thisComponent->minY = vertex->y;
+				}
+				//z
+				if (vertex->z > thisComponent->maxZ)
+				{
+					thisComponent->maxZ = vertex->z;
+				}
+				if (vertex->z < thisComponent->minZ)
+				{
+					thisComponent->minZ = vertex->z;
+				}
 			}
 			// generate world triangle matrix
 			for (int i = 0; i < thisComponent->elementVertex.size(); i+=3) {
@@ -79,7 +112,22 @@ void World::PrecalculateTriangles()
 				worldGeometry[geometrySize + 15] = uv3.y;
 
 			}
+			
+			int bbend = bbstart + thisComponent->elementVertex.size() * 0.33333333334;
+			int bbsize = boundingBoxes.size();
 
+			boundingBoxes.resize(bbsize+8);
+
+			boundingBoxes[bbsize] = thisComponent->maxX;
+			boundingBoxes[bbsize+1] = thisComponent->maxY;
+			boundingBoxes[bbsize+2] = thisComponent->maxZ;
+			boundingBoxes[bbsize+3] = float(bbstart);
+
+			boundingBoxes[bbsize+4] = thisComponent->minX;
+			boundingBoxes[bbsize + 5] = thisComponent->minY;
+			boundingBoxes[bbsize + 6] = thisComponent->minZ;
+			boundingBoxes[bbsize + 7] = float(bbend);
+			totalTriangles = bbend;
 		}
 	}
 }
@@ -87,4 +135,9 @@ void World::PrecalculateTriangles()
 std::vector<float>* World::GetWorldGeometry()
 {
 	return &worldGeometry;
+}
+
+std::vector<float>* World::GetBoundingBoxes()
+{
+	return &boundingBoxes;
 }

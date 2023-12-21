@@ -23,6 +23,7 @@ public:
 	Shader pathTracer;
 	Buffer triangle;
 	Buffer sphere;
+	Buffer boundingBox;
 
 	float test = 0.0;
 private:

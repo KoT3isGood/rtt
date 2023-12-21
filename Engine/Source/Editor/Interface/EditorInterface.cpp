@@ -76,10 +76,12 @@ void EditorInterface::CreateDockSpace()
        }
            
         
-       
-        
+        std::string countedFps = "FPS: "+std::to_string(1/fpsCounterDelta);
+        ImGui::Text(countedFps.c_str());
 
         ImGui::EndMenuBar();
+
+        
     }
    
    

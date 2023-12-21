@@ -67,14 +67,28 @@ GameWindow::GameWindow()
    
     vulkannerRendering = Vulkanner();
     vulkannerRendering.Init();
-    
+    int prevf = 0;
+    int curf = 0;
+    float fpsCounterDelta = 0.0;
 
     while (!glfwWindowShouldClose(window) && editor.shouldAppBeOpened)
     {
+
+
+
+
+
         // 1. calculate delta time
         currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        curf = glfwGetTime() * 10000;
+        curf = curf % 1000;
+        if (curf < prevf) {
+            fpsCounterDelta = deltaTime;
+        }
+        prevf = curf;
 
         // 2. execute code from dll
         World* currentWorld = CurrentGame::getCurrentGame()->GetWorld();
@@ -118,10 +132,10 @@ GameWindow::GameWindow()
 
         
 
-        
-
-        editor.CreateInterface();
+        editor.fpsCounterDelta = fpsCounterDelta;
         editor.viewportTexture = &vulkannerRendering.albedoOutput;
+        editor.CreateInterface();
+        
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

@@ -13,6 +13,8 @@ public:
 	std::vector<Actor*> actors = {};
 	void PrecalculateTriangles();
 	std::vector<float>* GetWorldGeometry();
+	std::vector<float>* GetBoundingBoxes();
 private:
 	std::vector<float> worldGeometry = {};
+	std::vector<float> boundingBoxes = {};
 };

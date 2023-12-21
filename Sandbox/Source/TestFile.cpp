@@ -18,6 +18,5 @@ void TestActor::EventEnd()
 
 void TestActor::EventTick(float deltaTime)
 {
-	position.x += deltaTime*10;
-	position.y += deltaTime * 2;
+	rotation.x += deltaTime;
 }

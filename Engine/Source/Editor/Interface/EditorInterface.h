@@ -28,6 +28,7 @@ public:
 
 	bool shouldGameLoaderBeOpened = true;
 	bool shouldAppBeOpened = true;
+	float fpsCounterDelta = 1.0;
 private:
 	void CreateDockSpace();
 	void CreateGameLoader();
