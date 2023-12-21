@@ -3,12 +3,12 @@
 #include "Runnable/Reflected.h"
 class Component : public Reflected {
 public:
-	Component();
+	Component() = default;
 	virtual void EventBegin();
 	virtual void EventEnd();
-	virtual void EventTick();
+	virtual void EventTick(float deltaTime);
 
 	vec3 position = vec3(0.0);
 	vec3 rotation = vec3(0.0);
-	vec3 size = vec3(0.0);
+	vec3 size = vec3(1.0);
 };

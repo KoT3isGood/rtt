@@ -27,6 +27,7 @@ void GameLoader::UpdateDll(std::string dllName)
 void GameLoader::RunVoidFunction(std::string name)
 {
 	if (!LoadingStatus) {
+		PRINT("DLL was not found");
 		return;
 	}
 	// Creates new void function
@@ -34,9 +35,9 @@ void GameLoader::RunVoidFunction(std::string name)
 	using FunctionCaller = void (*)();
 	FunctionCaller functionCaller = (FunctionCaller)GetProcAddress(currentDll, name.c_str());
 	if (functionCaller == nullptr) {
+		PRINT("Function was not found");
 		return;
 	}
-
 	// Calls function
 	functionCaller();
 }

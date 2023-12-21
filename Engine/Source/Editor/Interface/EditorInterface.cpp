@@ -92,9 +92,13 @@ void EditorInterface::CreateGameLoader()
         ImGui::Begin("Game Loading Tool", &shouldGameLoaderBeOpened, ImGuiWindowFlags_NoTitleBar);
         
         if (ImGui::Button("Load Sandbox.dll")) {
-            shouldGameLoaderBeOpened = false;
-            CurrentGame::setCurrentGame("Sandbox.dll");
+            //shouldGameLoaderBeOpened = false;
+            CurrentGame::setCurrentGame("../Debug/Sandbox.dll");
+           
         }
+        if (ImGui::Button("run spawn actor")) {
+            CurrentGame::getCurrentGame()->RunVoidFunction("SpawnActorTest");
+        };
         ImGui::End();
     }
 }

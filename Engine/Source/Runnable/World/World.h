@@ -1,6 +1,8 @@
 #pragma once
 #include "EngineMacros.h"
 #include "Runnable/Actor/Actor.h"
+#include "Tools/rttmath.h"
+#include "Runnable/Component/Mesh.h"
 class World
 {
 public:
@@ -8,7 +10,9 @@ public:
 	World(std::string worldName);
 	void SpawnActor(Actor* actor);
 	void UpdateWorld(float deltaTime);
-private:
 	std::vector<Actor*> actors = {};
+	void PrecalculateTriangles();
+	std::vector<float>* GetWorldGeometry();
+private:
+	std::vector<float> worldGeometry = {};
 };
-

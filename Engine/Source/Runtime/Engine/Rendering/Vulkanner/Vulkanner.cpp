@@ -1,4 +1,5 @@
 #include "Vulkanner.h"
+#include "Runtime/Engine/GameLoader/CurrentGame.h"
 
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
@@ -47,6 +48,23 @@ void Vulkanner::Init()
 	pathTracer = Shader("Source/Runtime/Engine/Rendering/Vulkanner/Shaders/pathTracer.comp");
 	albedoOutput = RenderTexture(*resolution, 0);
 	triangle = Buffer(0);
+    sphere = Buffer(2);
+
+
+
+
+
+
+
+
+    // Background Drawing
+
+
+
+
+
+
+
 
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -105,37 +123,46 @@ void Vulkanner::Update(ivec2 *resolutionPtr,float deltaTime)
 {
 
 	resolution = resolutionPtr;
+
+    std::vector<float> spheres = {
+    };
+    int triAmount = 0;
+    GameLoader* currentGame = CurrentGame::getCurrentGame();
+    if (currentGame->currentGame != "") {
+        std::vector<float>* geometry = currentGame->GetWorld()->GetWorldGeometry();
+        triAmount = geometry->size();
+        triangle.SetData(triAmount, geometry);
+        
+    }
+    else {
+        std::vector<float>triangles = {};
+        triangle.SetData(0, &triangles);
+    }
+
+
 	
-	std::vector<float> triangles = {
-	1,0,0,1,
-	0,1,0,1,
-	0,0,1,1,
-    1,1,1,1,
-	};
-	triangle.SetData(12, &triangles);
+    sphere.SetData(spheres.size(), &spheres);
 
 	albedoOutput.BindTextureAndUpdateRes(*resolution);
 	pathTracer.use();
-	pathTracer.setVec2("resolution", vec2(resolution->x, resolution->y));
-    pathTracer.setInt("amountOfTriangles", 1);
 
-    int w, h;
-    int miplevel = 0;
-    glBindTexture(GL_TEXTURE_2D, albedoOutput.texture);
-    glGetTexLevelParameteriv(GL_TEXTURE_2D, miplevel, GL_TEXTURE_WIDTH, &w);
-    glGetTexLevelParameteriv(GL_TEXTURE_2D, miplevel, GL_TEXTURE_HEIGHT, &h);
+
+	pathTracer.setVec2("resolution", vec2(resolution->x, resolution->y));
+    pathTracer.setInt("amountOfTriangles", triAmount/16);
+    pathTracer.setInt("amountOfLights", spheres.size()/4);
     
     pathTracer.setBool("isOrto", false);
 
-    pathTracer.setVec3("cameraPos", vec3(-2, 0, 0));
-    pathTracer.setVec3("cameraRotation", vec3(0.0, 0.0, 0.0));
+    pathTracer.setVec3("cameraPos", vec3(-5, 0.0, 0));
+    pathTracer.setVec3("cameraRotation", vec3(0.000, 0.0, 0.0));
 
     test += deltaTime;
 	glDispatchCompute(int(resolution->x/8+1), int(resolution->y/8+1), 1);
 	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
-	
 
-    //glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
+    spheres.clear();
+
+    glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     glUseProgram(shaderProgram);

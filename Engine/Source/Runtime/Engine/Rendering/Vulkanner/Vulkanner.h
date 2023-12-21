@@ -22,6 +22,7 @@ public:
 	// Textures Shaders Buffers etc
 	Shader pathTracer;
 	Buffer triangle;
+	Buffer sphere;
 
 	float test = 0.0;
 private:

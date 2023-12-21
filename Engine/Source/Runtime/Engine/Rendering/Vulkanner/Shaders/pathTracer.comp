@@ -16,6 +16,10 @@ layout(std430,binding = 0) buffer triangleBuffer {
     // uv10,uv11,uv20,uv21
 };
 
+layout(std430, binding = 2) buffer lightbuffer {
+    vec4 lightPosition[];
+};
+
 // Bounding Box Buffer
 // Used for optimization
 layout(std430,binding = 1) buffer boundingBoxes {
@@ -28,6 +32,7 @@ layout(std430,binding = 1) buffer boundingBoxes {
 uniform vec3 cameraPos;
 uniform vec3 cameraRotation;
 uniform int amountOfTriangles;
+uniform int amountOfLights;
 uniform vec2 resolution;
 uniform bool isOrto;
 
@@ -100,8 +105,21 @@ vec3 triIntersect( in Ray ray, in vec3 v0, in vec3 v1, in vec3 v2 )
     if( u<0.0 || v<0.0 || (u+v)>1.0 ) t = -1.0;
     return vec3( t, u, v );
 }
+// Ray-sphere intersection
+// Source: https://iquilezles.org/articles/intersectors/
+vec2 sphIntersect( in Ray ray, in vec3 ce, float ra )
+{
+    
+    vec3 oc = ray.origin - ce;
+    float b = dot( oc, ray.direction );
+    float c = dot( oc, oc ) - ra*ra;
+    float h = b*b - c;
+    if( h<0.0 ) return vec2(-1.0); // no intersection
+    h = sqrt( h );
+    return vec2( -b-h, -b+h );
+}
 
-bool traceRayT(in Ray ray, out vec3 triangleProperties, out int triangle) {
+bool traceRayT(in Ray ray, out vec3 hitInfo, out int triangle) {
     int nearestTriangle = -1;
     vec3 hit = vec3(100000,0,0);
     for (int i = 0; i<amountOfTriangles;i++) {
@@ -112,12 +130,12 @@ bool traceRayT(in Ray ray, out vec3 triangleProperties, out int triangle) {
         };
     }
     if (hit.x>0.0&&hit.x!=100000) {
-        triangleProperties = hit;
+        hitInfo = hit;
         triangle = nearestTriangle;
         return true;
     }
-
-   
+    
+    
 
 
 
@@ -127,7 +145,23 @@ bool traceRayT(in Ray ray, out vec3 triangleProperties, out int triangle) {
 }
 
 
-
+bool traceRayS(in Ray ray, out vec2 hitInfo, out int sphere) {
+    int nearestSphere = -1;
+    vec2 hit = vec2(100000,0.0);
+    for (int i = 0; i<amountOfLights;i++) {
+        vec2 thisHit = sphIntersect(ray,lightPosition[i].xyz,lightPosition[i].w);
+        if (thisHit.x>=0.0 && thisHit.x<hit.x) {
+            hit = thisHit;
+            nearestSphere = i;
+        };
+    }
+    if (hit.x>0.0&&hit.x!=100000) {
+        hitInfo = hit;
+        sphere = nearestSphere;
+        return true;
+    }
+    return false;
+};
 
 
 
@@ -169,7 +203,7 @@ void main() {
 
     if (!isOrto) {
         albedoRay.origin = cameraPos;
-        albedoRay.direction = vec3(1,uv)*getCameraRotationMatrix();
+        albedoRay.direction = normalize(vec3(1,uv))*getCameraRotationMatrix();
     } else {
         //albedoRay.direction = vec3(1,0,0)*getCameraRotationMatrix();
         //albedoRay.origin = cameraPos+vec3(0,uv)*getCameraRotationMatrix();
@@ -179,15 +213,16 @@ void main() {
 
     vec3 triangleProperties;
     int triangle;
+
+    vec2 sphereProperties;
+    int sphere;
     bool hit = false;
     hit = traceRayT(albedoRay,triangleProperties,triangle);
 
     vec3 color = vec3(0.0);
     if (hit) {
         color = vec3(1.0);
-    }
-
-
+    };
 
     imageStore(imgOutput, texelCoord, vec4(color,1.0));
 }

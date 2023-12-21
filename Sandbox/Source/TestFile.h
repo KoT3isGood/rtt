@@ -1,4 +1,14 @@
 #pragma once
-#include "ProjectMacros.h"
+#include "Runnable/Actor/Actor.h"
 
-FUNC void UpdateWorld();
+#include "Runnable/Component/Mesh.h"
+
+class TestActor: public Actor {
+public:
+	TestActor();
+	void EventBegin() override;
+	void EventEnd() override;
+	void EventTick(float deltaTime) override;
+
+	Mesh testMesh = Mesh();
+};

@@ -17,6 +17,9 @@
     <ClInclude Include="Source\Runnable\Component\Component.h" />
     <ClInclude Include="Source\Runnable\Reflected.h" />
     <ClInclude Include="Source\Editor\ImGLM\Convertor.h" />
+    <ClInclude Include="Source\Runnable\Component\Mesh.h" />
+    <ClInclude Include="Source\Runtime\Engine\Tokenizer\Tokenizer.h" />
+    <ClInclude Include="Source\Tools\rttmath.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
@@ -36,5 +39,8 @@
     <ClCompile Include="Source\Runnable\Component\Component.cpp" />
     <ClCompile Include="Source\Runnable\Reflected.cpp" />
     <ClCompile Include="Source\Editor\ImGLM\Convertor.cpp" />
+    <ClCompile Include="Source\Runnable\Component\Mesh.cpp" />
+    <ClCompile Include="Source\Runtime\Engine\Tokenizer\Tokenizer.cpp" />
+    <ClCompile Include="Source\Tools\rttmath.cpp" />
   </ItemGroup>
 </Project>

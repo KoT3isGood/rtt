@@ -1,17 +1,16 @@
 #include "Component.h"
 
-Component::Component()
-{
-}
-
 void Component::EventBegin()
 {
+	return;
 }
 
 void Component::EventEnd()
 {
+	return;
 }
 
-void Component::EventTick()
+void Component::EventTick(float deltaTime)
 {
+	return;
 }

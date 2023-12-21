@@ -35,14 +35,17 @@
     <ClInclude Include="Source\Engine\Rendering\Texture\TextureFile.h" />
     <ClInclude Include="Source\Runnable\Actor\Actor.h" />
     <ClInclude Include="Source\Runnable\Component\Component.h" />
+    <ClInclude Include="Source\Runnable\Component\Mesh.h" />
     <ClInclude Include="Source\Runnable\Reflected.h" />
     <ClInclude Include="Source\Runtime\Engine\GameLoader\CurrentGame.h" />
     <ClInclude Include="Source\Runtime\Engine\GameLoader\GameLoader.h" />
     <ClInclude Include="Source\EngineMacros.h" />
     <ClInclude Include="Source\Runtime\Engine\Rendering\Vulkanner\Vulkanner.h" />
     <ClInclude Include="Source\Runtime\Engine\Rendering\WindowGenerator.h" />
+    <ClInclude Include="Source\Runtime\Engine\Tokenizer\Tokenizer.h" />
     <ClInclude Include="Source\Tools\Logger.h" />
     <ClInclude Include="Source\Runnable\World\World.h" />
+    <ClInclude Include="Source\Tools\rttmath.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Editor\ImGLM\Convertor.cpp" />
@@ -53,6 +56,7 @@
     <ClCompile Include="Source\Engine\Rendering\Texture\TextureFile.cpp" />
     <ClCompile Include="Source\Runnable\Actor\Actor.cpp" />
     <ClCompile Include="Source\Runnable\Component\Component.cpp" />
+    <ClCompile Include="Source\Runnable\Component\Mesh.cpp" />
     <ClCompile Include="Source\Runnable\Reflected.cpp" />
     <ClCompile Include="Source\Runtime\Engine\GameLoader\CurrentGame.cpp" />
     <ClCompile Include="Source\Runtime\Engine\GameLoader\GameLoader.cpp" />
@@ -60,8 +64,10 @@
     <ClCompile Include="Source\Runtime\Engine\Rendering\Include\glad\glad.c" />
     <ClCompile Include="Source\Runtime\Engine\Rendering\Vulkanner\Vulkanner.cpp" />
     <ClCompile Include="Source\Runtime\Engine\Rendering\WindowGenerator.cpp" />
+    <ClCompile Include="Source\Runtime\Engine\Tokenizer\Tokenizer.cpp" />
     <ClCompile Include="Source\Tools\Logger.cpp" />
     <ClCompile Include="Source\Runnable\World\World.cpp" />
+    <ClCompile Include="Source\Tools\rttmath.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
