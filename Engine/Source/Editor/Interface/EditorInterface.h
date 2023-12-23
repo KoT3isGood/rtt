@@ -11,6 +11,8 @@
 //#include "Engine/Rendering/Shader/Shader.h"
 #include "Engine/Rendering/Texture/Texture.h"
 
+
+
 class EditorInterface {
 public:
 	
@@ -28,6 +30,10 @@ public:
 
 	bool shouldGameLoaderBeOpened = true;
 	bool shouldAppBeOpened = true;
+	bool isRunning = false;
+	World worldEditorCopy;
+	std::vector<Actor*> actorsEditorCopy;
+
 	float fpsCounterDelta = 1.0;
 private:
 	void CreateDockSpace();

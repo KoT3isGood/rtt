@@ -6,7 +6,7 @@ class Mesh : public Component {
 public:
 	std::string lastFilePath;
 
-	Mesh() = default;
+	Mesh();
 
 	float maxX = -FLT_MAX;
 	float minX = FLT_MAX;

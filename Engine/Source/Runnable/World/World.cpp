@@ -1,8 +1,5 @@
 #include "World.h"
 
-World::World(std::string worldName)
-{
-}
 
 void World::SpawnActor(Actor* actor)
 {
@@ -11,9 +8,11 @@ void World::SpawnActor(Actor* actor)
 
 void World::UpdateWorld(float deltaTime)
 {
-	for (Actor* actor : actors) {
-		actor->EventTick(deltaTime);
-	};
+	if (isTickingEnabled) {
+		for (Actor* actor : actors) {
+			actor->EventTick(deltaTime);
+		};
+	}
 }
 
 void World::PrecalculateTriangles()
@@ -38,11 +37,11 @@ void World::PrecalculateTriangles()
 			for (int i = 0; i < thisComponent->modifiedVertex.size();i++) {
 				vec3* vertex = &thisComponent->modifiedVertex[i];
 				// Iteration 1: component transform
-				//*vertex *= componentSize;
+				*vertex *= componentSize;
 				*vertex = componentRotation * *vertex;
 				*vertex += componentPosition;
 				// Iteration 1: actor transform
-				//*vertex *= actorSize;
+				*vertex *= actorSize;
 				*vertex = actorRotation * *vertex;
 				*vertex += actorPosition;
 
@@ -140,4 +139,132 @@ std::vector<float>* World::GetWorldGeometry()
 std::vector<float>* World::GetBoundingBoxes()
 {
 	return &boundingBoxes;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+World::World(std::string worldName)
+{
+
+}
+
+
+
+void World::SerializeWorld(std::string path, std::string name)
+{
+	std::ofstream world("world.wretto");
+	world.clear();
+
+	// Write variables
+	for (auto actor : actors) {
+		std::string className = actor->classClassName;
+		className = className.erase(0, 6);
+		className = className.erase(className.size()-10, className.size()-1);
+
+		world << "[" << className << "]" << "\n";
+
+		for (int i = 0; i < actor->variableRegistryNames.size();i++) {
+			classType varClass = getClassTypeFromString(actor->variableRegistryClass[i]);
+
+			switch (varClass) {
+			case integer:
+				world << "int" << " "; break;
+			case floating:
+				world << "float" << " "; break;
+			case stringData:
+				world << "string" << " "; break;
+			case vector2:
+				world << "vec2" << " "; break;
+			case vector3:
+				world << "vec3" << " "; break;
+			case vector4:
+				world << "vec4" << " "; break;
+			}
+
+			if (varClass!=noneVar) {
+				world << actor->variableRegistryNames[i] << " = ";
+
+				void* ptrActor = actor->variableRegistry[i];
+				switch (varClass) {
+				case integer:
+				{int* outDataInt = static_cast<int*>(ptrActor); world << *outDataInt; break; }
+				case floating:
+				{float* outDataFloat = static_cast<float*>(ptrActor); world << *outDataFloat; break; }
+				case stringData:
+				{std::string* outDataString = static_cast<std::string*>(ptrActor); world << *outDataString; break; }
+				case vector2:
+				{vec2* outDataVec2 = static_cast<vec2*>(ptrActor); world << outDataVec2->x << "," << outDataVec2->y; break; }
+				case vector3:
+				{vec3* outDataVec3 = static_cast<vec3*>(ptrActor); world << outDataVec3->x << "," << outDataVec3->y << "," << outDataVec3->z; break; }
+				case vector4:
+				{vec4* outDataVec4 = static_cast<vec4*>(ptrActor); world << outDataVec4->x << "," << outDataVec4->y << "," << outDataVec4->z << "," << outDataVec4->w; break; }
+				}
+				world << ";\n";
+			}
+			
+		};
+		/*for (Component* component: actor->components) {
+			std::string componentName = component->classClassName;
+			componentName = componentName.erase(0, 6);
+			componentName = componentName.erase(componentName.size() - 10, componentName.size() - 1);
+			world << "[[" << componentName << "]]" << "\n";
+			for (int i = 0; i < component->variableRegistryNames.size(); i++) {
+				for (int i = 0; i < actor->variableRegistryNames.size(); i++) {
+					classType varClass = getClassTypeFromString(actor->variableRegistryClass[i]);
+
+					switch (varClass) {
+					case integer:
+						world << "int" << " "; break;
+					case floating:
+						world << "float" << " "; break;
+					case stringData:
+						world << "string" << " "; break;
+					case vector2:
+						world << "vec2" << " "; break;
+					case vector3:
+						world << "vec3" << " "; break;
+					case vector4:
+						world << "vec4" << " "; break;
+					}
+
+					if (varClass != noneVar) {
+						world << actor->variableRegistryNames[i] << " = ";
+
+						void* ptrActor = actor->variableRegistry[i];
+						switch (varClass) {
+						case integer:
+						{int* outDataInt = static_cast<int*>(ptrActor); world << *outDataInt; break; }
+						case floating:
+						{float* outDataFloat = static_cast<float*>(ptrActor); world << *outDataFloat; break; }
+						case stringData:
+						{std::string* outDataString = static_cast<std::string*>(ptrActor); world << *outDataString; break; }
+						case vector2:
+						{vec2* outDataVec2 = static_cast<vec2*>(ptrActor); world << outDataVec2->x << "," << outDataVec2->y; break; }
+						case vector3:
+						{vec3* outDataVec3 = static_cast<vec3*>(ptrActor); world << outDataVec3->x << "," << outDataVec3->y << "," << outDataVec3->z; break; }
+						case vector4:
+						{vec4* outDataVec4 = static_cast<vec4*>(ptrActor); world << outDataVec4->x << "," << outDataVec4->y << "," << outDataVec4->z << "," << outDataVec4->w; break; }
+						}
+						world << ";\n";
+					}
+
+				};
+			};
+		};*/
+	}
+	// Close the file
+	world.close();
 }

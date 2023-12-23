@@ -15,9 +15,9 @@ public:
 
 	// Runs function by name
 	void RunVoidFunction(std::string name);
-
 	// Returns world
 	World* GetWorld();
+	World* GetWorldCopy();
 private:
 	HMODULE currentDll;
 	bool LoadingStatus = false;

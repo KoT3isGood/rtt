@@ -1,5 +1,11 @@
 #include "Mesh.h"
 
+Mesh::Mesh()
+{
+	classClassName = typeid(this).name();
+	className = "Mesh";
+}
+
 void Mesh::loadFromFile(std::string filePath)
 {
 	lastFilePath = filePath;

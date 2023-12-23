@@ -1,0 +1,10 @@
+[TestActor]
+vec3 position = 0,0,0;
+vec3 rotation = 2.18781,0,0;
+vec3 size = 1,1,1;
+int customInt = 1;
+float customFloat = 2;
+string customString = 3.0;
+vec2 customVector2 = 4,4;
+vec3 customVector3 = 5,5,5;
+vec4 customVector4 = 6,6,6,6;

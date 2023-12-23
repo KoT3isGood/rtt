@@ -25,7 +25,7 @@ public:
 	Buffer sphere;
 	Buffer boundingBox;
 
-	float test = 0.0;
+	int cmptLimit = 0;
 private:
 	unsigned int shaderProgram;
 	unsigned int VAO;

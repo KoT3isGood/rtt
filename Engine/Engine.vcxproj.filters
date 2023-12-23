@@ -20,6 +20,7 @@
     <ClInclude Include="Source\Runnable\Component\Mesh.h" />
     <ClInclude Include="Source\Runtime\Engine\Tokenizer\Tokenizer.h" />
     <ClInclude Include="Source\Tools\rttmath.h" />
+    <ClInclude Include="Source\Tools\classToEnum.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
@@ -42,5 +43,6 @@
     <ClCompile Include="Source\Runnable\Component\Mesh.cpp" />
     <ClCompile Include="Source\Runtime\Engine\Tokenizer\Tokenizer.cpp" />
     <ClCompile Include="Source\Tools\rttmath.cpp" />
+    <ClCompile Include="Source\Tools\classToEnum.cpp" />
   </ItemGroup>
 </Project>

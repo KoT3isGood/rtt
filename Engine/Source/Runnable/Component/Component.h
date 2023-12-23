@@ -3,7 +3,11 @@
 #include "Runnable/Reflected.h"
 class Component : public Reflected {
 public:
-	Component() = default;
+	// Serialization
+	std::string classClassName = "";
+	std::string className = "";
+
+	Component();
 	virtual void EventBegin();
 	virtual void EventEnd();
 	virtual void EventTick(float deltaTime);

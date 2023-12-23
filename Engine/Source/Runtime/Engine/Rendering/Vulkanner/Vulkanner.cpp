@@ -161,11 +161,10 @@ void Vulkanner::Update(ivec2 *resolutionPtr,float deltaTime)
     
     pathTracer.setBool("isOrto", false);
 
-    pathTracer.setVec3("cameraPos", vec3(-5, 0.0, 0));
+    pathTracer.setVec3("cameraPos", vec3(-10, 0.0, 0));
     pathTracer.setVec3("cameraRotation", vec3(0.000, 0.0, 0.0));
 
-    test += deltaTime;
-	glDispatchCompute(int(resolution->x/8+1), int(resolution->y/8+1), 1);
+	glDispatchCompute(int(resolution->x*0.125+1), int(resolution->y*0.125+1), 1);
 	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
     spheres.clear();

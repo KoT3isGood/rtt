@@ -4,8 +4,13 @@
 #include "Runnable\Component\Component.h"
 class Actor : public Reflected {
 public:
-	Actor() = default;
-	virtual void EventBegin();
+	// Serialization
+	std::string classClassName = "";
+	std::string className = "";
+
+	// Actors
+	Actor();
+	virtual void Construct();
 	virtual void EventEnd();
 	virtual void EventTick(float deltaTime);
 

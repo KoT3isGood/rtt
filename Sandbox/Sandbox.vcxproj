@@ -221,12 +221,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bridge\Generated\ClassRegistry.gen.h" />
     <ClInclude Include="Bridge\CurrentProperties.h" />
+    <ClInclude Include="Bridge\Inst.h" />
     <ClInclude Include="Bridge\ProjectMacros.h" />
     <ClInclude Include="Source\TestFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bridge\CurrentProperties.cpp" />
+    <ClCompile Include="Bridge\Generated\Inst.gen.cpp" />
     <ClCompile Include="Source\TestFile.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

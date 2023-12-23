@@ -96,10 +96,14 @@ vec3 triIntersect( in Ray ray, in vec3 v0, in vec3 v1, in vec3 v2 )
 {
     vec3 v1v0 = v1 - v0;
     vec3 v2v0 = v2 - v0;
-    vec3 rov0 = ray.origin - v0;
     vec3  n = cross( v1v0, v2v0 );
+    float dd = dot(ray.direction,n);
+    if (dd>0.0) {
+        return vec3(-1);
+    }
+    vec3 rov0 = ray.origin - v0;
     vec3  q = cross( rov0, ray.direction );
-    float d = 1.0/dot(  ray.direction, n );
+    float d = 1.0/dd;
     float u = d*dot( -q, v2v0 );
     float v = d*dot(  q, v1v0 );
     float t = d*dot( -n, rov0 );
@@ -133,22 +137,24 @@ bool RayBoundingBox(Ray ray, vec3 boxMin, vec3 boxMax){
 };
 
 
-bool traceRayT(in Ray ray, out vec3 hitInfo, out int triangle) {
+bool traceRayT(in Ray ray, out float dist, out vec2 uv, out int triangle) {
     int nearestTriangle = -1;
-    vec3 hit = vec3(100000,0,0);
+    float hitDist = 2^32-1;
+    vec2 hitUv = vec2(0,0);
     for (int mesh = 0; mesh < amountOfBoundingBoxes;mesh++) {
         if (RayBoundingBox(ray,boundingBox[mesh][0].xyz,boundingBox[mesh][1].xyz)) {
             for (int i = int(boundingBox[mesh][0].w); i<int(boundingBox[mesh][1].w);i++) {
                 vec3 thisHit = triIntersect(ray,triangles[i][0].xyz,triangles[i][1].xyz,triangles[i][2].xyz);
-                if (thisHit.x>=0.0 && thisHit.x<hit.x) {
-                    hit = thisHit;
+                if (thisHit.x>0.0 && thisHit.x<hitDist) {
+                    hitDist = thisHit.x;
                     nearestTriangle = i;
                 };
             }
         }
     }
     if (nearestTriangle!=-1) {
-            hitInfo = hit;
+            dist = hitDist;
+            uv = hitUv;
             triangle = nearestTriangle;
             return true;
     }
@@ -232,18 +238,17 @@ void main() {
     
 
 
-    vec3 triangleProperties;
+    vec2 triangleUV;
+    float dist;
     int triangle;
 
-    vec2 sphereProperties;
-    int sphere;
     bool hit = false;
-    hit = traceRayT(albedoRay,triangleProperties,triangle);
+    hit = traceRayT(albedoRay,dist,triangleUV,triangle);
     
 
     vec3 color = vec3(0.0);
     if (hit) {
-        color = vec3(triangleProperties.x/10);
+        color = vec3(dist/25);
     };
 
     imageStore(imgOutput, texelCoord, vec4(color,1.0));

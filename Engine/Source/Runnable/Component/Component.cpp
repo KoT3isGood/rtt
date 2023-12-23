@@ -1,5 +1,11 @@
 #include "Component.h"
 
+Component::Component() {
+	Register(position);
+	Register(rotation);
+	Register(size);
+};
+
 void Component::EventBegin()
 {
 	return;

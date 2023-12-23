@@ -1,6 +1,5 @@
 #include "EditorInterface.h"
 
-
 void EditorInterface::CreateInterface()
 {
 #ifndef NOGUI
@@ -69,7 +68,9 @@ void EditorInterface::CreateDockSpace()
                 shouldGameLoaderBeOpened = true;
             };
             ImGui::MenuItem("Save", "Ctrl+S");
-            ImGui::MenuItem("Save as","Ctrl+Shift+S");
+            if (ImGui::MenuItem("Save as", "Ctrl+Shift+S")) {
+                CurrentGame::getCurrentGame()->GetWorld()->SerializeWorld("123", "123");
+            };
             ImGui::Separator();
             if (ImGui::MenuItem("Exit", "Alt+F4")) { shouldAppBeOpened = false; };
             ImGui::EndMenu();
@@ -78,6 +79,25 @@ void EditorInterface::CreateDockSpace()
         
         std::string countedFps = "FPS: "+std::to_string(1/fpsCounterDelta);
         ImGui::Text(countedFps.c_str());
+
+        if (CurrentGame::getCurrentGame()->currentGame != "") {
+
+            if (ImGui::Button("Play")) {
+                worldEditorCopy = *CurrentGame::getCurrentGame()->GetWorldCopy();
+                CurrentGame::getCurrentGame()->GetWorld()->isTickingEnabled = true;
+
+            };
+            if (ImGui::Button("Stop")) {
+                CurrentGame::getCurrentGame()->GetWorld()->isTickingEnabled = false;
+                CurrentGame::getCurrentGame()->GetWorld()->actors = worldEditorCopy.actors;
+            }
+            std::string triangles = "Triangles: " + std::to_string(CurrentGame::getCurrentGame()->GetWorld()->GetWorldGeometry()->size() / 16);
+            ImGui::Text(triangles.c_str());
+
+
+        }
+
+
 
         ImGui::EndMenuBar();
 
@@ -96,7 +116,7 @@ void EditorInterface::CreateGameLoader()
         if (ImGui::Button("Load Sandbox.dll")) {
             //shouldGameLoaderBeOpened = false;
             CurrentGame::setCurrentGame("../Debug/Sandbox.dll");
-           
+            worldEditorCopy = *CurrentGame::getCurrentGame()->GetWorld();
         }
         if (ImGui::Button("run spawn actor")) {
             CurrentGame::getCurrentGame()->RunVoidFunction("SpawnActorTest");

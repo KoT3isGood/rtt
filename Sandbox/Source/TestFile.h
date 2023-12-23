@@ -6,9 +6,16 @@
 class TestActor: public Actor {
 public:
 	TestActor();
-	void EventBegin() override;
+	void Construct() override;
 	void EventEnd() override;
 	void EventTick(float deltaTime) override;
+private:
+	int customInt;
+	float customFloat;
+	std::string customString;
 
-	Mesh testMesh = Mesh();
+	vec2 customVector2;
+	vec3 customVector3;
+	vec4 customVector4;
+	Mesh testMesh;
 };

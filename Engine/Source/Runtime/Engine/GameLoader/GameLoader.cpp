@@ -58,6 +58,23 @@ World* GameLoader::GetWorld()
 	// Calls function
 	return functionCaller();
 }
+World* GameLoader::GetWorldCopy()
+{
+	if (!LoadingStatus) {
+		return nullptr;
+	}
+	// Creates new void function
+	// Gets address of the function
+	using FunctionCaller = World * (*)();
+	FunctionCaller functionCaller = (FunctionCaller)GetProcAddress(currentDll, "GetWorldCopy");
+	if (functionCaller == nullptr) {
+		PRINTADVANCED("Failed to find world, please make sure you have CurrentProperties.h in your game", error);
+		return nullptr;
+	}
+
+	// Calls function
+	return functionCaller();
+}
 void GameLoader::KillDll()
 {
 	if (LoadingStatus) {
