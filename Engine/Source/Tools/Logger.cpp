@@ -59,7 +59,7 @@ void logData(std::string data, LogType errortype, std::string callerFunction, st
 	case glslerror:
 		str = "======== RETTO [ GLSL ERROR ] [ " +
 			std::string(buf) +
-			" ] " +
+			" ] [ " +
 			callerFunction +
 			" in " +
 			callerFile +
@@ -72,7 +72,7 @@ void logData(std::string data, LogType errortype, std::string callerFunction, st
 	case warning:
 		str = "======== RETTO [ WARNING ] [ " +
 			std::string(buf) +
-			" ] " +
+			" ] [ " +
 			callerFunction +
 			" in " +
 			callerFile +
@@ -85,7 +85,7 @@ void logData(std::string data, LogType errortype, std::string callerFunction, st
 	case error:
 		str = "======== RETTO [ ERROR ] [ " +
 			std::string(buf) +
-			" ] " +
+			" ] [ " +
 			callerFunction +
 			" in " +
 			callerFile +
@@ -96,6 +96,7 @@ void logData(std::string data, LogType errortype, std::string callerFunction, st
 			"\n";
 		break;
 	}
+	std::cout << str;
 	std::wstring temp = std::wstring(str.begin(), str.end());
 	LPCWSTR wideString = temp.c_str();
 	OutputDebugStringW(wideString);

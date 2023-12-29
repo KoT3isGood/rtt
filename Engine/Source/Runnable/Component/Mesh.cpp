@@ -2,8 +2,18 @@
 
 Mesh::Mesh()
 {
+	RegisterVariables();
+}
+void Mesh::RegisterVariables() {
+	variableRegistryNames = {};
+	variableRegistry = {};
+	variableRegistryClass = {};
 	classClassName = typeid(this).name();
 	className = "Mesh";
+	Register(position);
+	Register(rotation);
+	Register(size);
+	Register(lastFilePath);
 }
 
 void Mesh::loadFromFile(std::string filePath)
@@ -105,4 +115,5 @@ void Mesh::EventEnd()
 
 void Mesh::EventTick(float deltaTime)
 {
+
 }

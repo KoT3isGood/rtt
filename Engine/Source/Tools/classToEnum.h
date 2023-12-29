@@ -3,6 +3,7 @@
 enum classType {
 	noneVar,
 	integer,
+	booleanC,
 	floating,
 	stringData,
 	vector2,

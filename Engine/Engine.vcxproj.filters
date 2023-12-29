@@ -21,6 +21,8 @@
     <ClInclude Include="Source\Runtime\Engine\Tokenizer\Tokenizer.h" />
     <ClInclude Include="Source\Tools\rttmath.h" />
     <ClInclude Include="Source\Tools\classToEnum.h" />
+    <ClInclude Include="Source\Runtime\Game\WhatTheHeader\Reflector.h" />
+    <ClInclude Include="Source\Runnable\Component\SubComponents\LightComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
@@ -44,5 +46,7 @@
     <ClCompile Include="Source\Runtime\Engine\Tokenizer\Tokenizer.cpp" />
     <ClCompile Include="Source\Tools\rttmath.cpp" />
     <ClCompile Include="Source\Tools\classToEnum.cpp" />
+    <ClCompile Include="Source\Runtime\Game\WhatTheHeader\Reflector.cpp" />
+    <ClCompile Include="Source\Runnable\Component\SubComponents\LightComponent.cpp" />
   </ItemGroup>
 </Project>

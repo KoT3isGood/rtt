@@ -1,5 +1,9 @@
 #include "Reflected.h"
 
+void Reflected::RegisterVariables()
+{
+}
+
 void Reflected::RegisterVariable(std::string varName, std::string varClass, void* varPtr)
 {
 	variableRegistryNames.push_back(varName);

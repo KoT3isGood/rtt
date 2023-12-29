@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "Runtime/Engine/Tokenizer/Tokenizer.h"
 
-class Mesh : public Component {
+class Mesh : public Component { REFLECTCLASS();
 public:
 	std::string lastFilePath;
 
@@ -32,3 +32,4 @@ public:
 	void EventEnd() override;
 	void EventTick(float deltaTime) override;
 };
+

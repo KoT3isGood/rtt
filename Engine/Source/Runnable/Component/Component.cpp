@@ -1,9 +1,7 @@
 #include "Component.h"
 
 Component::Component() {
-	Register(position);
-	Register(rotation);
-	Register(size);
+	RegisterVariables();
 };
 
 void Component::EventBegin()
@@ -19,4 +17,15 @@ void Component::EventEnd()
 void Component::EventTick(float deltaTime)
 {
 	return;
+}
+
+void Component::RegisterVariables() {
+	variableRegistryNames = {};
+	variableRegistry = {};
+	variableRegistryClass = {};
+	classClassName = typeid(this).name();
+	className = "LightComponent";
+	Register(position);
+	Register(rotation);
+	Register(size);
 }

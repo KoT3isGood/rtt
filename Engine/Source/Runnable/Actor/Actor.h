@@ -7,10 +7,8 @@ public:
 	// Serialization
 	std::string classClassName = "";
 	std::string className = "";
-
 	// Actors
 	Actor();
-	virtual void Construct();
 	virtual void EventEnd();
 	virtual void EventTick(float deltaTime);
 

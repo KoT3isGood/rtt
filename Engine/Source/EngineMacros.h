@@ -9,8 +9,15 @@
 #include "Engine/glm/glm.hpp"
 using namespace glm;
 
-template<typename T, typename ... Args>
-constexpr std::shared_ptr<T> CreateRef(Args&& ... args)
-{
-	return std::make_shared<T>(std::forward<Args>(args)...);
-}
+// DLL export engine macro
+#define FUNC extern "C" _declspec(dllexport)
+
+
+/*
+ * Use this to mark your class as reflected.
+ * If you build your project using Shift+B nothing will be generated.
+ * You have to use Build Button in ReTTo to generate variables.
+ * Make sure it is in front of the class opening.
+ * Like this: class XXX: public Reflectable { REFLECTCLASS();
+*/
+#define REFLECTCLASS() public: void RegisterVariables() override; private:

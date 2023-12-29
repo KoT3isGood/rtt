@@ -45,7 +45,7 @@ Vulkanner::Vulkanner()
 
 void Vulkanner::Init()
 {
-	pathTracer = Shader("Source/Runtime/Engine/Rendering/Vulkanner/Shaders/pathTracer.comp");
+	pathTracer = Shader("pathTracer.comp");
 	albedoOutput = RenderTexture(*resolution, 0);
 	triangle = Buffer(0);
     sphere = Buffer(3);
@@ -124,40 +124,42 @@ void Vulkanner::Update(ivec2 *resolutionPtr,float deltaTime)
 
 	resolution = resolutionPtr;
 
-    std::vector<float> spheres = {
-    };
     int triAmount = 0;
     int bbAmount = 0;
+    int lightsAmount = 0;
+
+    
     GameLoader* currentGame = CurrentGame::getCurrentGame();
     if (currentGame->currentGame != "") {
         std::vector<float>* geometry = currentGame->GetWorld()->GetWorldGeometry();
         std::vector<float>* bb = currentGame->GetWorld()->GetBoundingBoxes();
+        std::vector<float>* lights = currentGame->GetWorld()->GetWorldLights();
         triAmount = geometry->size();
         triangle.SetData(triAmount, geometry);
         bbAmount = bb->size();
         boundingBox.SetData(bbAmount, bb);
-
+        lightsAmount = lights->size();
+        sphere.SetData(lightsAmount, lights);
 
     }
     else {
         std::vector<float>triangles = {};
         triangle.SetData(0, &triangles);
         boundingBox.SetData(0, &triangles);
+        sphere.SetData(0, &triangles);
     }
 
     
 	
-    sphere.SetData(spheres.size(), &spheres);
 
 	albedoOutput.BindTextureAndUpdateRes(*resolution);
 	pathTracer.use();
 
 
 	pathTracer.setVec2("resolution", vec2(resolution->x, resolution->y));
-    pathTracer.setInt("amountOfTriangles", triAmount/16);
-    pathTracer.setInt("amountOfBoundingBoxes", bbAmount / 8);
-
-    pathTracer.setInt("amountOfLights", spheres.size()/4);
+    pathTracer.setInt("amountOfTriangles", int(triAmount*0.0625));
+    pathTracer.setInt("amountOfBoundingBoxes", int(bbAmount*0.125));
+    pathTracer.setInt("amountOfLights", int(lightsAmount*0.125));
     
     pathTracer.setBool("isOrto", false);
 
@@ -167,7 +169,19 @@ void Vulkanner::Update(ivec2 *resolutionPtr,float deltaTime)
 	glDispatchCompute(int(resolution->x*0.125+1), int(resolution->y*0.125+1), 1);
 	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
-    spheres.clear();
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);

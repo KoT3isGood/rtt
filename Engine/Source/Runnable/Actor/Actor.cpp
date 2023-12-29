@@ -2,14 +2,7 @@
 
 Actor::Actor()
 {
-	Register(position);
-	Register(rotation);
-	Register(size);
-}
 
-void Actor::Construct()
-{
-	return;
 }
 
 void Actor::EventEnd()

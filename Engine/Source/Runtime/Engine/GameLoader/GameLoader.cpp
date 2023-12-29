@@ -12,14 +12,19 @@ void GameLoader::UpdateDll(std::string dllName)
 	// Kills current DLL to prevent memory leak
 	this->KillDll();
 	this->LoadingStatus = false;
-
 	// Loads DLL
 	currentDll = LoadLibraryA(dllName.c_str());
-
 	// Checks if it was successful
 	LoadingStatus = (currentDll != nullptr);
+	PRINT(std::to_string(LoadingStatus));
 	if (LoadingStatus) {
 		this->currentGame = dllName;
+		this->currentGamePath = std::filesystem::path(currentGame).parent_path().string();
+		if (!std::filesystem::exists(this->currentGamePath + "/content")) {
+			std::filesystem::create_directory(this->currentGamePath + "/content");
+		}
+		std::filesystem::current_path(currentGamePath);
+		PRINT("DLL Was loaded successfuly");
 		return;
 	}
 }
@@ -27,7 +32,7 @@ void GameLoader::UpdateDll(std::string dllName)
 void GameLoader::RunVoidFunction(std::string name)
 {
 	if (!LoadingStatus) {
-		PRINT("DLL was not found");
+		PRINTADVANCED("DLL was not found",error);
 		return;
 	}
 	// Creates new void function
@@ -35,7 +40,7 @@ void GameLoader::RunVoidFunction(std::string name)
 	using FunctionCaller = void (*)();
 	FunctionCaller functionCaller = (FunctionCaller)GetProcAddress(currentDll, name.c_str());
 	if (functionCaller == nullptr) {
-		PRINT("Function was not found");
+		PRINTADVANCED("Function was not found", error);
 		return;
 	}
 	// Calls function
@@ -68,7 +73,7 @@ World* GameLoader::GetWorldCopy()
 	using FunctionCaller = World * (*)();
 	FunctionCaller functionCaller = (FunctionCaller)GetProcAddress(currentDll, "GetWorldCopy");
 	if (functionCaller == nullptr) {
-		PRINTADVANCED("Failed to find world, please make sure you have CurrentProperties.h in your game", error);
+		PRINTADVANCED("Failed to find world copy, please make sure to...", error);
 		return nullptr;
 	}
 
@@ -78,6 +83,8 @@ World* GameLoader::GetWorldCopy()
 void GameLoader::KillDll()
 {
 	if (LoadingStatus) {
+		this->LoadingStatus = false;
+		this->currentGame = "";
 		FreeLibrary(currentDll);
 		return;
 	}

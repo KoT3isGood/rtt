@@ -10,7 +10,7 @@
 //#include "Engine/Rendering/Buffer/Buffer.h"
 //#include "Engine/Rendering/Shader/Shader.h"
 #include "Engine/Rendering/Texture/Texture.h"
-
+#include "Runtime/Game/WhatTheHeader/Reflector.h"
 
 
 class EditorInterface {
@@ -41,4 +41,6 @@ private:
 	void CreateViewport();
 	void CreateActorBrowser();
 	void CreateActorProperties();
+	void GenerateRegister(std::string variableType, std::string variableNameStr, void* variable);
+	int selectedActor = -1;
 };

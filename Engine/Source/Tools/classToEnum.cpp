@@ -6,6 +6,9 @@ classType getClassTypeFromString(std::string className)
 	if (className == "int") {
 		return integer;
 	}
+	if (className == "bool") {
+		return booleanC;
+	}
 	if (className == "float") {
 		return floating;
 	}
