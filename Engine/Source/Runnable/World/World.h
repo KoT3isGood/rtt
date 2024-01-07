@@ -6,15 +6,18 @@
 #include "Runnable/Component/SubComponents/LightComponent.h"
 #include "Tools/classToEnum.h"
 #include <sstream>
+#include "PlayerController.h"
+
 class World
 {
 public:
 	World() = default;
-	World(std::string worldName);
-
 	void SerializeWorld(std::string path, std::string name);
 
+	PlayerController currentPlayerController;
+
 	void SpawnActor(Actor* actor);
+	void StartRunningWorld();
 	void UpdateWorld(float deltaTime);
 	std::vector<Actor*> actors = {};
 	void PrecalculateTriangles();
@@ -23,6 +26,7 @@ public:
 	std::vector<float>* GetBoundingBoxes();
 
 	bool isTickingEnabled = false;
+
 private:
 	std::vector<float> worldGeometry = {};
 	std::vector<float> boundingBoxes = {};

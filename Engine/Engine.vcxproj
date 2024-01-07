@@ -36,8 +36,10 @@
     <ClInclude Include="Source\Runnable\Actor\Actor.h" />
     <ClInclude Include="Source\Runnable\Component\Component.h" />
     <ClInclude Include="Source\Runnable\Component\Mesh.h" />
+    <ClInclude Include="Source\Runnable\Component\CameraComponent.h" />
     <ClInclude Include="Source\Runnable\Component\SubComponents\LightComponent.h" />
     <ClInclude Include="Source\Runnable\Reflected.h" />
+    <ClInclude Include="Source\Runnable\World\PlayerController.h" />
     <ClInclude Include="Source\Runtime\Engine\GameLoader\CurrentGame.h" />
     <ClInclude Include="Source\Runtime\Engine\GameLoader\GameLoader.h" />
     <ClInclude Include="Source\EngineMacros.h" />
@@ -58,10 +60,12 @@
     <ClCompile Include="Source\Engine\Rendering\Texture\Texture.cpp" />
     <ClCompile Include="Source\Engine\Rendering\Texture\TextureFile.cpp" />
     <ClCompile Include="Source\Runnable\Actor\Actor.cpp" />
+    <ClCompile Include="Source\Runnable\Component\CameraComponent.cpp" />
     <ClCompile Include="Source\Runnable\Component\Component.cpp" />
     <ClCompile Include="Source\Runnable\Component\Mesh.cpp" />
     <ClCompile Include="Source\Runnable\Component\SubComponents\LightComponent.cpp" />
     <ClCompile Include="Source\Runnable\Reflected.cpp" />
+    <ClCompile Include="Source\Runnable\World\PlayerController.cpp" />
     <ClCompile Include="Source\Runtime\Engine\GameLoader\CurrentGame.cpp" />
     <ClCompile Include="Source\Runtime\Engine\GameLoader\GameLoader.cpp" />
     <ClCompile Include="Source\main.cpp" />

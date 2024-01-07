@@ -30,12 +30,15 @@ layout(std430,binding = 2) buffer boundingBoxes {
 
 // Uniforms
 uniform vec3 cameraPos;
-uniform vec3 cameraRotation;
+uniform vec3 cameraRotationM1;
+uniform vec3 cameraRotationM2;
+uniform vec3 cameraRotationM3;
 uniform int amountOfTriangles;
 uniform int amountOfLights;
 uniform int amountOfBoundingBoxes;
 uniform vec2 resolution;
 uniform bool isOrto;
+uniform float orthoSize;
 
 
 
@@ -49,29 +52,6 @@ layout(rgba32f, binding = 0) uniform image2D imgOutput;
 
 
 
-
-mat3x3 getCameraRotationMatrix() {
-    float cx = cos(cameraRotation.x);
-	float sx = sin(cameraRotation.x);
-	float cy = cos(cameraRotation.y);
-	float sy = sin(cameraRotation.y);
-	float cz = cos(cameraRotation.z);
-	float sz = sin(cameraRotation.z);
-    return mat3x3(
-		cx, 0, sx,
-		0, 1, 0,
-		-sx, 0, cx
-	) * mat3x3(
-		1, 0, 0,
-		0, cy, -sy,
-		0, sy, cy
-	) * mat3x3(
-		cz, -sz, 0,
-		sz, cz, 0,
-		0, 0, 1
-	);
-
-}
 
 
 
@@ -167,6 +147,7 @@ bool traceRayT(in Ray ray, out float dist, out vec2 uv, out int triangle) {
                 if (thisHit.x>0.0 && thisHit.x<hitDist) {
                     hitDist = thisHit.x-0.000001;
                     nearestTriangle = i;
+                    hitUv = thisHit.yz;
                 };
             }
         }
@@ -181,8 +162,8 @@ bool traceRayT(in Ray ray, out float dist, out vec2 uv, out int triangle) {
 }
 vec2 calculateUV(vec2 uv,int triangle) {
     vec2 uvU = mix(vec2(triangles[triangle][1].w,triangles[triangle][2].w),vec2(triangles[triangle][3].xy),uv.x);
-    vec2 uvV = mix(vec2(triangles[triangle][1].w,triangles[triangle][2].w),vec2(triangles[triangle][3].zw),uv.x);
-    return uvU+uvV;
+    vec2 uvV = mix(vec2(triangles[triangle][1].w,triangles[triangle][2].w),vec2(triangles[triangle][3].zw),uv.y);
+    return uvV+uvU;//+uvV;
 }
 vec3 calcuateNormal(int triangle) {
     vec3 v1v0 = triangles[triangle][1].xyz - triangles[triangle][0].xyz;
@@ -251,6 +232,19 @@ bool CalculateDidHitLightObject(in Ray ray, out int light, out float distanced) 
 }
 
 
+vec3 sampleSphere(in float u, in float v, in vec3 center, in float radius, out vec3 normal, out vec3 dpdu, out vec3 dpdv, out float pdf_area) {
+    pdf_area = 1.0 / (4.0 * 3.1415926 * radius * radius);
+    float theta = acos(1.0 - 2.0 * u);
+    float phi = 2.0 * 3.1415926 * v;
+    float sinPhi = sin(phi);
+    float cosPhi = cos(phi);
+    float sinTheta = sin(theta);
+    vec3 r = radius * vec3(cosPhi*sinTheta, cos(theta), sinPhi*sinTheta);
+    normal = normalize(r);
+    dpdu = normalize(vec3(-r.z, 0, r.x));
+    dpdv = normalize(vec3(cosPhi * r.y, -radius * sinTheta, sinPhi * r.y));
+    return center + r;
+}
 
 
 
@@ -262,6 +256,28 @@ bool CalculateDidHitLightObject(in Ray ray, out int light, out float distanced) 
 
 
 
+mat3x3 getRotationMatrix(vec3 deg) {
+    float cx = cos(deg.x);
+	float sx = sin(deg.x);
+	float cy = cos(deg.y);
+	float sy = sin(deg.y);
+	float cz = cos(deg.z);
+	float sz = sin(deg.z);
+    return mat3x3(
+		cz, -sz, 0,
+		sz, cz, 0,
+		0, 0, 1
+	) * mat3x3(
+		1, 0, 0,
+		0, cy, -sy,
+		0, sy, cy
+	) * mat3x3(
+		cx, 0, sx,
+		0, 1, 0,
+		-sx, 0, cx
+	);
+
+}
 
 
 
@@ -286,13 +302,13 @@ void main() {
 
     if (!isOrto) {
         albedoRay.origin = cameraPos;
-        albedoRay.direction = normalize(vec3(1,uv));
+        albedoRay.direction = normalize(vec3(-1,uv)*-getRotationMatrix(-cameraRotationM1)*-getRotationMatrix(-cameraRotationM2));
     } else {
-        //albedoRay.direction = vec3(1,0,0)*getCameraRotationMatrix();
-        //albedoRay.origin = cameraPos+vec3(0,uv)*getCameraRotationMatrix();
+        albedoRay.direction = vec3(-1,0,0)*-getRotationMatrix(-cameraRotationM1)*-getRotationMatrix(-cameraRotationM2);
+        albedoRay.origin = cameraPos+vec3(0,uv*orthoSize)*-getRotationMatrix(-cameraRotationM1)*-getRotationMatrix(-cameraRotationM2);
     }
     
-    vec2 triangleUV;
+    vec2 triangleUV = vec2(0.0);
     float dist = 10000000;
    int triangle;
     bool hitTriangle = false;
@@ -304,32 +320,39 @@ void main() {
     int pixelIndex = int(pixelCoord.y * numPixels.x + pixelCoord.x);
     int rngState = pixelIndex;
 
-
+    vec3 hitpos = albedoRay.origin+albedoRay.direction*dist;
 
 
 
 
     vec3 color = vec3(0.0);
     // if (hitTriangle) {
-    //     color = calcuateNormal(triangle);
+    //     color = vec3(calculateUV(triangleUV,triangle),0.0);
     // }
     if (hitTriangle) {
-        
+        vec3 normalsp;
+        vec3 dpdu;
+        vec3 dpdv;
+        float pdf_area;
+        vec3 sampledPos = sampleSphere(random(rngState),random(rngState),lightPosition[0][0].xyz,lightPosition[0][0].w, normalsp, dpdu, dpdv, pdf_area);
+
+
         Ray directRay;
-        directRay.origin = albedoRay.origin+albedoRay.direction*dist;
-        directRay.direction = normalize((lightPosition[0][0].xyz+RandomDirection(rngState)*lightPosition[0][0].w)-directRay.origin);
+        directRay.origin = hitpos;
+        directRay.direction = normalize(sampledPos-directRay.origin);
         int sphere = 0;
-        float dist = 1.0;
+        float distDirect = 1.0;
         float normal = -dot(calcuateNormal(triangle),directRay.direction);
+
         if (normal>0.0) {
-            bool didhit = CalculateDidHitLightObject(directRay,sphere,dist);
+            bool didhit = CalculateDidHitLightObject(directRay,sphere,distDirect);
             if (didhit) {
-                color = lightPosition[sphere][1].xyz*lightPosition[sphere][1].w*normal/(dist*dist);
+                color = lightPosition[sphere][1].xyz*lightPosition[sphere][1].w*normal/(distDirect*distDirect);
             }
         }
+        
        
     }
-
     
 
 

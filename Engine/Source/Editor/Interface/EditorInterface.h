@@ -19,6 +19,7 @@ public:
 
 	EditorInterface() = default;
 	void CreateInterface();
+
 	ivec2* currentWindowSize;
 	GLFWwindow* currentWindow;
 
@@ -36,6 +37,7 @@ public:
 
 	float fpsCounterDelta = 1.0;
 private:
+	void LoadCustomInterface();
 	void CreateDockSpace();
 	void CreateGameLoader();
 	void CreateViewport();

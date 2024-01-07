@@ -23,6 +23,8 @@
     <ClInclude Include="Source\Tools\classToEnum.h" />
     <ClInclude Include="Source\Runtime\Game\WhatTheHeader\Reflector.h" />
     <ClInclude Include="Source\Runnable\Component\SubComponents\LightComponent.h" />
+    <ClInclude Include="Source\Runnable\Component\CameraComponent.h" />
+    <ClInclude Include="Source\Runnable\World\PlayerController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
@@ -48,5 +50,7 @@
     <ClCompile Include="Source\Tools\classToEnum.cpp" />
     <ClCompile Include="Source\Runtime\Game\WhatTheHeader\Reflector.cpp" />
     <ClCompile Include="Source\Runnable\Component\SubComponents\LightComponent.cpp" />
+    <ClCompile Include="Source\Runnable\Component\CameraComponent.cpp" />
+    <ClCompile Include="Source\Runnable\World\PlayerController.cpp" />
   </ItemGroup>
 </Project>

@@ -11,6 +11,7 @@
 struct ClassObject {
 	std::string name;
 	bool shouldBeReflected;
+	bool isComponent;
 	std::vector<std::string> variables;
 };
 

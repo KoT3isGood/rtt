@@ -24,7 +24,7 @@ void Component::RegisterVariables() {
 	variableRegistry = {};
 	variableRegistryClass = {};
 	classClassName = typeid(this).name();
-	className = "LightComponent";
+	className = "Component";
 	Register(position);
 	Register(rotation);
 	Register(size);

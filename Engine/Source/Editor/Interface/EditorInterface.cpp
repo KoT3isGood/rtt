@@ -14,6 +14,10 @@ void EditorInterface::CreateInterface()
     ImGui::EndDisabled();
 #endif
 }
+void EditorInterface::LoadCustomInterface()
+{
+
+}
 
 void EditorInterface::CreateDockSpace()
 {
@@ -63,37 +67,65 @@ void EditorInterface::CreateDockSpace()
     bool Menubar = ImGui::BeginMenuBar();
     if (Menubar)
     {
+        if (CurrentGame::getCurrentGame()->currentGame != "") {
+            ImGui::BeginDisabled(CurrentGame::getCurrentGame()->GetWorld()->isTickingEnabled);
+        }
+        
         if(ImGui::BeginMenu("File")) {
+
             ImGui::MenuItem("New", "Ctrl+N");
-            if (ImGui::MenuItem("Open", "Ctrl+O")) {
+           
+            /*if (!CurrentGame::getCurrentGame()->GetWorld()->isTickingEnabled) {
+
+            }*/
+            if (ImGui::MenuItem("Open", "Ctrl+Shift+O")) {
+                CurrentGame::getCurrentGame()->LoadWorldFromName("");
                 shouldGameLoaderBeOpened = true;
             };
             ImGui::MenuItem("Save", "Ctrl+S");
             if (ImGui::MenuItem("Save as", "Ctrl+Shift+S")) {
-                CurrentGame::getCurrentGame()->GetWorld()->SerializeWorld("123", "123");
+                CurrentGame::getCurrentGame()->GetWorld()->SerializeWorld("worlds", "testWorld");
             };
             ImGui::Separator();
             if (ImGui::MenuItem("Exit", "Alt+F4")) { shouldAppBeOpened = false; };
+            
             ImGui::EndMenu();
+            
        }
-           
+        if (CurrentGame::getCurrentGame()->currentGame != "") {
+        ImGui::EndDisabled();
+        }
         
-        std::string countedFps = "FPS: "+std::to_string(1/fpsCounterDelta);
-        ImGui::Text(countedFps.c_str());
+        
 
         if (CurrentGame::getCurrentGame()->currentGame != "") {
 
-            if (ImGui::Button("Play")) {
-                worldEditorCopy = *CurrentGame::getCurrentGame()->GetWorldCopy();
-                CurrentGame::getCurrentGame()->GetWorld()->isTickingEnabled = true;
+            if (!CurrentGame::getCurrentGame()->GetWorld()->isTickingEnabled) {
+                if (ImGui::Button("Play")) {
+                    worldEditorCopy = *CurrentGame::getCurrentGame()->GetWorldCopy();
+                    CurrentGame::getCurrentGame()->GetWorld()->isTickingEnabled = true;
+                    CurrentGame::getCurrentGame()->GetWorld()->currentPlayerController.ownedActor = nullptr;
+                    CurrentGame::getCurrentGame()->GetWorld()->StartRunningWorld();
+                };
+                if (ImGui::Button("Build")) {
 
-            };
-            if (ImGui::Button("Stop")) {
-                CurrentGame::getCurrentGame()->GetWorld()->isTickingEnabled = false;
-                CurrentGame::getCurrentGame()->GetWorld()->actors.clear();
-                CurrentGame::getCurrentGame()->GetWorld()->actors = worldEditorCopy.actors;
+                    BuildReflectedGame(CurrentGame::getCurrentGame());
 
+                };
             }
+            if (CurrentGame::getCurrentGame()->GetWorld()->isTickingEnabled) {
+                if (ImGui::Button("Stop")) {
+                    CurrentGame::getCurrentGame()->GetWorld()->isTickingEnabled = false;
+                    CurrentGame::getCurrentGame()->GetWorld()->actors.clear();
+                    CurrentGame::getCurrentGame()->GetWorld()->actors = worldEditorCopy.actors;
+                    CurrentGame::getCurrentGame()->GetWorld()->currentPlayerController.ownedActor = nullptr;
+
+                }
+            }
+         
+            std::string countedFps = "FPS: " + std::to_string(1 / fpsCounterDelta);
+            ImGui::Text(countedFps.c_str());
+
             std::string triangles = "Triangles: " + std::to_string(CurrentGame::getCurrentGame()->GetWorld()->GetWorldGeometry()->size() / 16);
             ImGui::Text(triangles.c_str());
 
@@ -118,17 +150,13 @@ void EditorInterface::CreateGameLoader()
         
         if (ImGui::Button("Load Sandbox.dll")) {
             //shouldGameLoaderBeOpened = false;
-            CurrentGame::setCurrentGame("E:\\ReTToSbx\\ReTToSbx.dll");
+            CurrentGame::setCurrentGame("E:/ReTToSbx/ReTToSbx.dll");
             worldEditorCopy = *CurrentGame::getCurrentGame()->GetWorld();
         }
         if (ImGui::Button("run spawn actor")) {
             CurrentGame::getCurrentGame()->RunVoidFunction("SpawnActorTest");
         };
-        if (ImGui::Button("build")) {
-            
-            BuildReflectedGame(CurrentGame::getCurrentGame());
-
-        };
+       
         ImGui::End();
     }
 }
@@ -178,12 +206,11 @@ void EditorInterface::CreateActorProperties()
                 Actor* currentActor = CurrentGame::getCurrentGame()->GetWorld()->actors[selectedActor];
                 for (int currentComponent = 0; currentComponent < currentActor->components.size(); currentComponent++) {
 
-                    if (ImGui::TreeNode(currentActor->components[currentComponent]->className.c_str())) {
+                    if (ImGui::TreeNode(std::string(std::to_string(currentComponent) +" : " + currentActor->components[currentComponent]->className).c_str())) {
                         for (int currentVariable = 0; currentVariable < currentActor->components[currentComponent]->variableRegistryNames.size(); currentVariable++) {
                             void* variable = currentActor->components[currentComponent]->variableRegistry[currentVariable];
                             std::string variableType = currentActor->components[currentComponent]->variableRegistryClass[currentVariable];
                             std::string variableNameStr = currentActor->components[currentComponent]->variableRegistryNames[currentVariable];
-                            ImGui::Text(variableType.c_str());
 
                             GenerateRegister(variableType, variableNameStr, variable);
                         }
@@ -200,7 +227,6 @@ void EditorInterface::CreateActorProperties()
                 void* variable = CurrentGame::getCurrentGame()->GetWorld()->actors[selectedActor]->variableRegistry[i];
                 std::string variableType = CurrentGame::getCurrentGame()->GetWorld()->actors[selectedActor]->variableRegistryClass[i];
                 std::string variableNameStr = CurrentGame::getCurrentGame()->GetWorld()->actors[selectedActor]->variableRegistryNames[i];
-                ImGui::Text(variableType.c_str());
 
                 GenerateRegister(variableType, variableNameStr, variable);
 
@@ -245,22 +271,6 @@ void EditorInterface::GenerateRegister(std::string variableType, std::string var
         vec4* varPointer = static_cast<vec4*>(variable);
         ImGui::DragVec4(variableName, varPointer, 0.1);
     }
-    //else if (variableType == "class Mesh * __ptr64") {
-    //    if (ImGui::TreeNode(variableName)) {
-    //        Mesh* varPointer = static_cast<Mesh*>(variable);
-    //        std::string fileLocationString = varPointer->lastFilePath;
-
-    //        char buf[255];
-    //        strcpy(buf, fileLocationString.c_str());
-    //        ImGui::InputText("Mesh Path", buf, 255);
-    //        varPointer->lastFilePath = buf;
-
-    //        if (ImGui::Button("Open")) {
-    //            varPointer->loadFromFile(varPointer->lastFilePath);
-    //        }
-    //        ImGui::TreePop();
-    //    }
-    //}
     else {
         std::string unsupportedVariableNameStr = variableNameStr + " : Unsupported class";
         char* variableName = const_cast<char*>(unsupportedVariableNameStr.c_str());

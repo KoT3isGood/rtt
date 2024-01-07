@@ -14,10 +14,19 @@ using namespace glm;
 
 
 /*
- * Use this to mark your class as reflected.
+ * Use this to mark your Actor as reflected.
  * If you build your project using Shift+B nothing will be generated.
  * You have to use Build Button in ReTTo to generate variables.
- * Make sure it is in front of the class opening.
- * Like this: class XXX: public Reflectable { REFLECTCLASS();
+ * Make sure it is in front of the Actor's opening.
+ * Like this: class XXX: public Reflectable { REFLECTACTOR();
 */
-#define REFLECTCLASS() public: void RegisterVariables() override; private:
+#define REFLECTACTOR() public: void RegisterVariables() override; private:
+
+/*
+ * Use this to mark your Component as reflected.
+ * If you build your project using Shift+B nothing will be generated.
+ * You have to use Build Button in ReTTo to generate variables.
+ * Make sure it is in front of the Component's opening.
+ * Like this: class XXX: public Reflectable { REFLECTACTOR();
+*/
+#define REFLECTCOMPONENT() public: void RegisterVariables() override; private:

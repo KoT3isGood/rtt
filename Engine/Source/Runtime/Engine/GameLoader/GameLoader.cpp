@@ -80,6 +80,26 @@ World* GameLoader::GetWorldCopy()
 	// Calls function
 	return functionCaller();
 }
+
+void GameLoader::LoadWorldFromName(std::string path)
+{
+	if (!LoadingStatus) {
+		return;
+	}
+	// Creates new void function
+	// Gets address of the function
+	using FunctionCaller = Actor * (*)(std::string);
+	FunctionCaller functionCaller = (FunctionCaller)GetProcAddress(currentDll, "LoadWorldFromName");
+	if (functionCaller == nullptr) {
+		PRINTADVANCED("Failed to find world copy, please make sure to...", error);
+		return;
+	}
+
+	// Calls function
+	functionCaller(path);
+}
+
+
 void GameLoader::KillDll()
 {
 	if (LoadingStatus) {

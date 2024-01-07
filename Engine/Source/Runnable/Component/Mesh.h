@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "Runtime/Engine/Tokenizer/Tokenizer.h"
 
-class Mesh : public Component { REFLECTCLASS();
+class Mesh : public Component { REFLECTCOMPONENT();
 public:
 	std::string lastFilePath;
 

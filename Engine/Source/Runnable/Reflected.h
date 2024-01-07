@@ -11,6 +11,7 @@ class Reflected {
 public:
 	virtual void RegisterVariables();
 	void RegisterVariable(std::string varName,std::string varClass,void* varPtr);
+	int TryToFindVariableByName(std::string variable);
 	std::vector<std::string> variableRegistryNames;
 	std::vector<void*> variableRegistry;
 	std::vector<std::string> variableRegistryClass;

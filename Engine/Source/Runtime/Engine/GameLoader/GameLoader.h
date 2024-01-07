@@ -12,7 +12,6 @@ public:
 
 	// Sets current DLL
 	void UpdateDll(std::string dllName);
-	void RebuildDLL();
 	// Kills current DLL
 	void KillDll();
 
@@ -23,6 +22,7 @@ public:
 	// Creates world copy
 	// For debugging;
 	World* GetWorldCopy();
+	void LoadWorldFromName(std::string path);
 private:
 	HMODULE currentDll;
 	bool LoadingStatus = false;

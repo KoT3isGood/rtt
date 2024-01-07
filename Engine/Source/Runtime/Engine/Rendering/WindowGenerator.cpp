@@ -74,7 +74,7 @@ GameWindow::GameWindow()
     while (!glfwWindowShouldClose(window) && editor.shouldAppBeOpened)
     {
 
-
+        
 
 
 
@@ -96,6 +96,7 @@ GameWindow::GameWindow()
         if (currentWorld != nullptr) {
             currentWorld->UpdateWorld(deltaTime);
             CurrentGame::getCurrentGame()->GetWorld()->PrecalculateTriangles();
+            
         }
        
 

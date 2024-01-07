@@ -128,9 +128,40 @@ void Vulkanner::Update(ivec2 *resolutionPtr,float deltaTime)
     int bbAmount = 0;
     int lightsAmount = 0;
 
+
     
     GameLoader* currentGame = CurrentGame::getCurrentGame();
     if (currentGame->currentGame != "") {
+        Actor* currentActor = CurrentGame::getCurrentGame()->GetWorld()->currentPlayerController.ownedActor;
+        if (currentActor == nullptr) {
+        } else {
+
+            CameraComponent* currentCamera = currentActor->currentCamera;
+            if (currentCamera == nullptr) {
+            } else 
+            {
+                vec3 vertex = currentActor->currentCamera->position;
+                vertex = vec3(vertex.x, vertex.z, vertex.y);
+                vertex *= currentActor->size;
+                mat3x3 ActorRotation = rotationToMat3x3(currentActor->rotation);
+                mat3x3 CameraRotation = rotationToMat3x3(currentActor->currentCamera->rotation);
+                vertex = ActorRotation * vertex;
+                vertex += currentActor->position;
+
+                mat3 cameraMatrix = ActorRotation * CameraRotation;
+
+                pathTracer.setVec3("cameraPos", vec3(vertex));
+                pathTracer.setVec3("cameraRotationM1", vec3(cameraMatrix[0]));
+                pathTracer.setVec3("cameraRotationM2", vec3(cameraMatrix[1]));
+                pathTracer.setVec3("cameraRotationM3", vec3(cameraMatrix[2]));
+                
+            }
+        }
+
+
+
+
+
         std::vector<float>* geometry = currentGame->GetWorld()->GetWorldGeometry();
         std::vector<float>* bb = currentGame->GetWorld()->GetBoundingBoxes();
         std::vector<float>* lights = currentGame->GetWorld()->GetWorldLights();
@@ -154,6 +185,41 @@ void Vulkanner::Update(ivec2 *resolutionPtr,float deltaTime)
 
 	albedoOutput.BindTextureAndUpdateRes(*resolution);
 	pathTracer.use();
+    pathTracer.setVec3("cameraPos", vec3(0.0, 0.0, 0));
+    pathTracer.setVec3("cameraRotationM1", vec3(0.0, 0.0, 0.0));
+    pathTracer.setVec3("cameraRotationM2", vec3(0.0, 0.0, 0.0));
+    pathTracer.setBool("isOrto", false);
+    pathTracer.setFloat("orthoSize", 1.0);
+
+    if (currentGame->currentGame != "") {
+        Actor* currentActor = CurrentGame::getCurrentGame()->GetWorld()->currentPlayerController.ownedActor;
+        if (currentActor == nullptr) {
+        }
+        else {
+
+            CameraComponent* currentCamera = currentActor->currentCamera;
+            if (currentCamera == nullptr) {
+            }
+            else
+            {
+                mat3x3 ActorRotation = rotationToMat3x3(vec3(currentActor->rotation.x, currentActor->rotation.y, currentActor->rotation.z));
+                mat3x3 CameraRotation = rotationToMat3x3(currentActor->currentCamera->rotation);
+
+                vec3 vertex = currentActor->currentCamera->position;
+                vertex = vec3(vertex.x, vertex.z, vertex.y);
+                vertex *= currentActor->size;
+                vertex = ActorRotation * vertex;
+                vertex += currentActor->position;
+
+                pathTracer.setVec3("cameraPos", vec3(vertex));
+                pathTracer.setVec3("cameraRotationM1", vec3(currentActor->currentCamera->rotation));
+                pathTracer.setVec3("cameraRotationM2", vec3(currentActor->rotation));
+                pathTracer.setBool("isOrto", currentActor->currentCamera->isOrtoGraphic);
+                pathTracer.setFloat("orthoSize", currentActor->currentCamera->orthoSize);
+            }
+        }
+    }
+
 
 
 	pathTracer.setVec2("resolution", vec2(resolution->x, resolution->y));
@@ -161,10 +227,9 @@ void Vulkanner::Update(ivec2 *resolutionPtr,float deltaTime)
     pathTracer.setInt("amountOfBoundingBoxes", int(bbAmount*0.125));
     pathTracer.setInt("amountOfLights", int(lightsAmount*0.125));
     
-    pathTracer.setBool("isOrto", false);
+    //pathTracer.setBool("isOrto", false);
 
-    pathTracer.setVec3("cameraPos", vec3(-10, 0.0, 0));
-    pathTracer.setVec3("cameraRotation", vec3(0.000, 0.0, 0.0));
+    
 
 	glDispatchCompute(int(resolution->x*0.125+1), int(resolution->y*0.125+1), 1);
 	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);

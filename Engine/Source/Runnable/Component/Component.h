@@ -2,7 +2,7 @@
 #include "EngineMacros.h"
 #include "Runnable/Reflected.h"
 class Component : public Reflected {
-	REFLECTCLASS();
+	REFLECTCOMPONENT();
 public:
 	// Serialization
 	std::string classClassName = "";
